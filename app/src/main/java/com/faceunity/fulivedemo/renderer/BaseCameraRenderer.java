@@ -85,6 +85,8 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
     private int mSmallViewportBottomPadding;
     private int mTouchX;
     private int mTouchY;
+    
+    private DrawManager draw_manager=new DrawManager();
 
     protected BaseCameraRenderer(Activity activity, GLSurfaceView glSurfaceView, OnRendererStatusListener onRendererStatusListener) {
         mGlSurfaceView = glSurfaceView;
@@ -119,6 +121,8 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
         });
         LimitFpsUtil.setTargetFps(LimitFpsUtil.DEFAULT_FPS);
         mOnRendererStatusListener.onSurfaceCreated();
+
+        draw_manager.onSurfaceCreated(gl,config);       //by hyz
     }
 
     @Override
@@ -135,6 +139,8 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
         mSmallViewportX = width - mSmallViewportWidth - mSmallViewportHorizontalPadding;
         mSmallViewportY = mSmallViewportBottomPadding;
         mOnRendererStatusListener.onSurfaceChanged(width, height);
+
+        draw_manager.onSurfaceChanged(gl,width,height);     //by hyz
     }
 
     private void FUDrawFrame()
@@ -189,6 +195,7 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
 
         FUDrawFrame();      //by hyz, FaceUnity draw
 
+        draw_manager.onDrawFrame(gl);
 
         LimitFpsUtil.limitFrameRate();
         if (!mIsStopPreview) {
