@@ -11,7 +11,6 @@ import com.faceunity.fulivedemo.drawobject.DrawObject;
 import com.faceunity.fulivedemo.drawobject.DrawText;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Vector;
 
