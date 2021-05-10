@@ -191,11 +191,12 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
         if (mProgramTexture2d == null || mSurfaceTexture == null) {
             return;
         }
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        FUDrawFrame();      //by hyz, FaceUnity draw
+        draw_manager.onDrawBackground();
 
-        draw_manager.onDrawFrame(gl);
+        FUDrawFrame();                      //by hyz, FaceUnity draw
+
+        draw_manager.onDrawForeground();
 
         LimitFpsUtil.limitFrameRate();
         if (!mIsStopPreview) {

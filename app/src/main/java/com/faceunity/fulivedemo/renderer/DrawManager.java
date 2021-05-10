@@ -19,20 +19,16 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class DrawManager
 {
-    private final int MAX_DRAW_OBJECT=4;
+    private final int FOREGROUND_OBJECT_COUNT=2;
+    private final int BACKGROUND_OBJECT_COUNT=2;
+    private final int MAX_DRAW_OBJECT=FOREGROUND_OBJECT_COUNT+BACKGROUND_OBJECT_COUNT;
+
     private int screen_width,screen_height;
     private DrawObject draw_object[]={null,null,null,null};
-    private int draw_index[];
     private Queue<GL2Event> event_queue=new LinkedList<GL2Event>();
     private Vector<DrawText> draw_text_list=new Vector<DrawText>();
 
-    DrawManager()
-    {
-        draw_index=new int[MAX_DRAW_OBJECT];
-
-        for(int i=0;i<MAX_DRAW_OBJECT;i++)
-            draw_index[i]=i;
-    }
+    DrawManager(){}
 
     public final int GetMaxDrawObject()
     {
@@ -51,26 +47,32 @@ public class DrawManager
         event_queue.clear();
     }
 
-    public void onDrawFrame(GL10 gl)
+    public void onDrawBackground()
     {
         RunAsyncEvent();
 
         GLES20.glGetError();        //清空错误
 
-        //GLES20.glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
-        //GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
+        GLES20.glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+        GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
 
-        int index;
-
-        for(int i=0;i<MAX_DRAW_OBJECT;i++)
+        for(int i=0;i<BACKGROUND_OBJECT_COUNT;i++)
         {
-            index=draw_index[i];
-
-            if(index<0||index>MAX_DRAW_OBJECT) {
-                continue;
+            if(draw_object[i]!=null){
+                draw_object[i].draw();
             }
-            if(draw_object[index]!=null){
-                draw_object[index].draw();
+        }
+    }
+
+    public void onDrawForeground()
+    {
+        GLES20.glGetError();        //清空错误
+
+        for(int i=BACKGROUND_OBJECT_COUNT;
+                i<BACKGROUND_OBJECT_COUNT+FOREGROUND_OBJECT_COUNT;i++)
+        {
+            if(draw_object[i]!=null){
+                draw_object[i].draw();
             }
         }
 
@@ -91,7 +93,7 @@ public class DrawManager
 
             dt.setColor(1,1,0,1);
             dt.setPosition(10,10);                  //设置绘制位置
-            dt.setSize(24);                             //设置字符大小
+            dt.setSize(24);                              //设置字符大小
             dt.setText("Hello,World! 你好，世界！");      //设置文本
 
             dt.refresh();                               //刷新内容
@@ -140,15 +142,6 @@ public class DrawManager
         if(obj==null)return;
 
         event_queue.add(new GL2EventSetBitmap(obj,bmp,rotate));
-    }
-    /**
-     * 设置绘制顺序
-     * @param order
-     */
-    public void setDrawOrder(int[] order)
-    {
-        for(int i=0;i<MAX_DRAW_OBJECT;i++)
-            draw_index[i]=order[i];
     }
 
     public boolean setLayout(int index,float left,float top,float width,float height)
