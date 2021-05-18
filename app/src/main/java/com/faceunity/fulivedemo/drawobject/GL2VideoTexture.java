@@ -20,10 +20,11 @@ public class GL2VideoTexture extends GL2Texture implements MediaPlayerStateListe
     public GL2VideoTexture(VideoPlayer vp)
     {
         super("GL2VideoTexture");
-        player=vp;
-        player.setOnMediaPlayerStateListener(this);
 
         init(GL_TEXTURE_EXTERNAL_OES);
+
+        player=vp;
+        player.setOnMediaPlayerStateListener(this);
     }
 
     public void create(SurfaceTexture.OnFrameAvailableListener listener)
