@@ -20,7 +20,6 @@ import android.media.MediaPlayer;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Surface;
-import android.widget.VideoView;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,11 +48,6 @@ public class VideoPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
      * {@link MediaPlayerStateListener} instance object
      */
     private com.faceunity.fulivedemo.videoplayer.MediaPlayerStateListener mediaPlayerStateListener;
-
-    /**
-     * {@link VideoView} instance object
-     */
-    private FullScreenVideoView videoView;
 
     /**
      * video file absolute path
@@ -113,52 +107,6 @@ public class VideoPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
     }
 
     /**
-     * start video view play
-     */
-    public void start() {
-        stop();
-        if (isUrlValid()) {
-            videoView = new FullScreenVideoView(context);
-            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    videoView.start();
-                }
-            });
-            videoView.setVideoPath(path);
-            videoView.start();
-        }
-    }
-
-    /**
-     * stop video view play
-     */
-    private void stop() {
-        if (videoView != null) {
-            videoView.stopPlayback();
-            videoView = null;
-        }
-    }
-
-    /**
-     * resume video view play
-     */
-    public void resume() {
-        if (videoView != null) {
-            videoView.start();
-        }
-    }
-
-    /**
-     * pause video view play
-     */
-    public void pause() {
-        if (videoView != null) {
-            videoView.pause();
-        }
-    }
-
-    /**
      * configure mp4 player parameter
      *
      * @param surface {@link Surface} instance object
@@ -209,7 +157,6 @@ public class VideoPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
                 mediaPlayerStateListener.onPlayStop();
             }
         }
-        stop();
     }
 
     @Override
