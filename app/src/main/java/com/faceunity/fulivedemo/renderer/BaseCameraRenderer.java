@@ -122,7 +122,7 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
         LimitFpsUtil.setTargetFps(LimitFpsUtil.DEFAULT_FPS);
         mOnRendererStatusListener.onSurfaceCreated();
 
-        draw_manager.onSurfaceCreated(gl,config);       //by hyz
+        draw_manager.onSurfaceCreated(mActivity,gl,config);       //by hyz
     }
 
     @Override
@@ -192,9 +192,10 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
             return;
         }
 
-        draw_manager.onDrawBackground();
+        draw_manager.update();
+        //draw_manager.onDrawBackground();
 
-        FUDrawFrame();                      //by hyz, FaceUnity draw
+        //FUDrawFrame();                      //by hyz, FaceUnity draw
 
         draw_manager.onDrawForeground();
 

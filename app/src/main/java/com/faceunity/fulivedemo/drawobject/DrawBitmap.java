@@ -21,6 +21,9 @@ public class DrawBitmap extends DrawObject
     }
 
     @Override
+    public void start(){}
+
+    @Override
     public void update(){}
 
     public void update(Bitmap bmp, int rotate)

@@ -1,6 +1,8 @@
 package com.faceunity.fulivedemo.renderer;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.SurfaceTexture;
 import android.opengl.GLES20;
 
 import com.faceunity.fulivedemo.async.GL2Event;
@@ -9,6 +11,7 @@ import com.faceunity.fulivedemo.async.GL2EventSetLayout;
 import com.faceunity.fulivedemo.drawobject.DrawBitmap;
 import com.faceunity.fulivedemo.drawobject.DrawObject;
 import com.faceunity.fulivedemo.drawobject.DrawText;
+import com.faceunity.fulivedemo.drawobject.DrawVideo;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -17,16 +20,19 @@ import java.util.Vector;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class DrawManager
+public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
 {
     private final int FOREGROUND_OBJECT_COUNT=2;
     private final int BACKGROUND_OBJECT_COUNT=2;
     private final int MAX_DRAW_OBJECT=FOREGROUND_OBJECT_COUNT+BACKGROUND_OBJECT_COUNT;
 
+    private Activity activity;
     private int screen_width,screen_height;
     private DrawObject draw_object[]={null,null,null,null};
     private Queue<GL2Event> event_queue=new LinkedList<GL2Event>();
     private Vector<DrawText> draw_text_list=new Vector<DrawText>();
+
+    private boolean updateSurface = false;
 
     DrawManager(){}
 
@@ -47,10 +53,25 @@ public class DrawManager
         event_queue.clear();
     }
 
-    public void onDrawBackground()
+    public void update()
     {
         RunAsyncEvent();
 
+        synchronized (this)
+        {
+            if(updateSurface)
+            {
+                for(int i=0;i<MAX_DRAW_OBJECT;i++)
+                    if(draw_object[i]!=null)
+                        draw_object[i].update();
+
+                updateSurface = false;
+            }
+        }
+    }
+
+    public void onDrawBackground()
+    {
         GLES20.glGetError();        //清空错误
 
         GLES20.glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
@@ -100,11 +121,26 @@ public class DrawManager
 
             draw_text_list.add(dt);
         }
+
+        //创建视频测试
+        {
+            DrawVideo dv=new DrawVideo(activity.getApplicationContext(),this);
+
+            dv.SetLayout(0,0,1,1);
+
+            dv.init("/sdcard/Movies/ink_painting.mp4");
+
+            draw_object[3]=dv;
+        }
     }
 
-    public void onSurfaceCreated(GL10 gl, EGLConfig config)
+    public void onSurfaceCreated(Activity act,GL10 gl, EGLConfig config)
     {
-        // Do nothing.
+        activity=act;
+
+        synchronized (this) {
+            updateSurface = false;
+        }
     }
 
     public boolean setBitmap(int index,Bitmap bmp,int rotate)
@@ -161,5 +197,11 @@ public class DrawManager
         if(obj==null)return;
 
         event_queue.add(new GL2EventSetLayout(obj,left,top,width,height));
+    }
+
+    @Override
+    public void onFrameAvailable(SurfaceTexture surfaceTexture)
+    {
+        updateSurface = true;
     }
 }

@@ -118,6 +118,9 @@ public class DrawText extends DrawObject
     }
 
     @Override
+    public void start(){}
+
+    @Override
     public void update(){}
 
     @Override

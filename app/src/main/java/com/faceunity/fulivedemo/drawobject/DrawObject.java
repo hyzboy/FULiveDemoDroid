@@ -43,6 +43,7 @@ public abstract class DrawObject extends GLClass
         render_layout.set(l,t,w,h);
     }
 
+    public abstract void start();
     public abstract void update();
     public abstract void draw();
 }

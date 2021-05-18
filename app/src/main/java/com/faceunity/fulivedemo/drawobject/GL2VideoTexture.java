@@ -5,36 +5,69 @@ import android.media.MediaPlayer;
 import android.view.Surface;
 
 import com.faceunity.fulivedemo.gl.GL2Texture;
+import com.faceunity.fulivedemo.videoplayer.MediaPlayerStateListener;
+import com.faceunity.fulivedemo.videoplayer.VideoPlayer;
 
 import java.io.IOException;
 
-public class GL2VideoTexture extends GL2Texture implements SurfaceTexture.OnFrameAvailableListener{
-
+public class GL2VideoTexture extends GL2Texture implements MediaPlayerStateListener
+{
     private final int GL_TEXTURE_EXTERNAL_OES = 0x8D65;
+    private SurfaceTexture surfaceTexture=null;
+    private Surface surface=null;
+    private VideoPlayer player=null;
 
-    public SurfaceTexture surfaceTexture;
-
-    public void init(MediaPlayer player)
+    public GL2VideoTexture(VideoPlayer vp)
     {
+        super("GL2VideoTexture");
+        player=vp;
+        player.setOnMediaPlayerStateListener(this);
+
         init(GL_TEXTURE_EXTERNAL_OES);
+    }
 
-        surfaceTexture = new SurfaceTexture(texture_id);
-        surfaceTexture.setOnFrameAvailableListener(this);
+    public void create(SurfaceTexture.OnFrameAvailableListener listener)
+    {
+        surfaceTexture = new SurfaceTexture(super.texture_id);
+        surfaceTexture.setOnFrameAvailableListener(listener);
 
-        Surface surface = new Surface(surfaceTexture);
-        player.setSurface(surface);
-        surface.release();
+        surface = new Surface(surfaceTexture);
 
-        try {
+        if(player!=null)
+        {
+            player.configure(surface);
             player.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+
+        surface.release();
+    };
+
+    public void update()
+    {
+        if(surfaceTexture!=null)
+            surfaceTexture.updateTexImage();
+    }
+
+    @Override
+    public void onPlayStart(String path)
+    {
+        if (player != null) {
+            player.prepare();
+            player.startPlay();
         }
     }
 
     @Override
-    public synchronized void onFrameAvailable(SurfaceTexture surface)
+    public void onPlayCompleted()
     {
-        surfaceTexture.updateTexImage();
+        if (player != null) {
+            player.startPlay();
+        }
+    }
+
+    @Override
+    public void onPlayStop()
+    {
+
     }
 }

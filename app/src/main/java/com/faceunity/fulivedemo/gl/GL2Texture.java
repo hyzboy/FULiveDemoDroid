@@ -14,6 +14,10 @@ public class GL2Texture extends com.faceunity.fulivedemo.gl.GLClass
     {
         super("GL2Texture");
     }
+    public GL2Texture(String tag)
+    {
+        super(tag);
+    }
 
     private void CreateTexture()
     {

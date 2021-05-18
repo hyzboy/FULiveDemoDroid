@@ -1,29 +1,48 @@
 package com.faceunity.fulivedemo.drawobject;
 
+import android.content.Context;
+import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.opengl.GLES20;
+
+import com.faceunity.fulivedemo.videoplayer.VideoPlayer;
 
 /**
  * 绘制影片
  */
 public class DrawVideo extends DrawObject
 {
-    private MediaPlayer player;
+    private VideoPlayer player=null;
     private GL2VideoTexture video_texture=null;
     private ShaderOpaque shader=new ShaderOpaque();
 
-    public DrawVideo(MediaPlayer mp)
+    public DrawVideo(Context con, SurfaceTexture.OnFrameAvailableListener listener)
     {
         super(ObjectType.Video);
 
-        player=mp;
-        video_texture=new GL2VideoTexture();
-        video_texture.init(player);
+        player=new VideoPlayer(con);
+        video_texture = new GL2VideoTexture(player);
+        video_texture.create(listener);
+    }
+
+    public void init(String name)
+    {
+        player.setDataSource(name);
+    }
+
+    @Override
+    public void start()
+    {
+        if(player!=null)
+            player.startPlay();
     }
 
     @Override
     public void update()
-    {}
+    {
+        if(video_texture!=null)
+            video_texture.update();
+    }
 
     @Override
     public void draw()
@@ -36,20 +55,5 @@ public class DrawVideo extends DrawObject
 
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP,0,4);
         shader.end();
-    }
-
-    public void play()
-    {
-        player.start();
-    }
-
-    public void stop()
-    {
-        player.stop();
-    }
-
-    public void restart()
-    {
-        player.reset();
     }
 }
