@@ -193,15 +193,15 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
         }
 
         draw_manager.update();
-        //draw_manager.onDrawBackground();
+        draw_manager.onDrawBackground();
 
         //FUDrawFrame();                      //by hyz, FaceUnity draw
 
-        draw_manager.onDrawForeground();
+        //draw_manager.onDrawForeground();
 
-        LimitFpsUtil.limitFrameRate();
+        //LimitFpsUtil.limitFrameRate();
         if (!mIsStopPreview) {
-            mGlSurfaceView.requestRender();
+            //mGlSurfaceView.requestRender();
         }
     }
 

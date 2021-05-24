@@ -81,7 +81,7 @@ public class VideoPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
      * @param path video file absolute path
      */
     public void setDataSource(String path) {
-        Log.d(TAG, "setDataSource path = " + path);
+        Log.e(TAG, "setDataSource path = " + path);
         this.path = path;
         if (isUrlValid()) {
             if (mediaPlayerStateListener != null) {
@@ -124,7 +124,7 @@ public class VideoPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
      */
     public void prepare() {
         if (isUrlValid() && mMediaPlayer != null) {
-            Log.d(TAG, "prepare...");
+            Log.e(TAG, "prepare...");
             try {
                 mMediaPlayer.reset();
                 mMediaPlayer.setDataSource(path);
@@ -140,7 +140,7 @@ public class VideoPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
      */
     public void startPlay() {
         if (isUrlValid() && mMediaPlayer != null) {
-            Log.d(TAG, "startPlay...");
+            Log.e(TAG, "startPlay...");
             mMediaPlayer.start();
         }
     }
@@ -149,7 +149,7 @@ public class VideoPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
      * stop play
      */
     public void stopPlay() {
-        Log.d(TAG, "stopPlay...");
+        Log.e(TAG, "stopPlay...");
         if (mMediaPlayer != null) {
             mMediaPlayer.stop();
             mMediaPlayer.release();
@@ -161,7 +161,7 @@ public class VideoPlayer implements MediaPlayer.OnCompletionListener, MediaPlaye
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        Log.d(TAG, "onCompletion...");
+        Log.e(TAG, "onCompletion...");
         if (mediaPlayerStateListener != null) {
             mediaPlayerStateListener.onPlayCompleted();
         }

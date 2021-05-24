@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.opengl.GLES20;
+import android.util.Log;
 
 import com.faceunity.fulivedemo.videoplayer.VideoPlayer;
 
@@ -37,9 +38,11 @@ public class DrawVideo extends DrawObject
             player.startPlay();
     }
 
+    private String TAG=getClass().getSimpleName();
     @Override
     public void update()
     {
+        Log.e(TAG, "update: " );
         if(video_texture!=null)
             video_texture.update();
     }
@@ -47,6 +50,7 @@ public class DrawVideo extends DrawObject
     @Override
     public void draw()
     {
+        Log.e(TAG, "draw: " );
         GLES20.glDisable(GLES20.GL_BLEND);
         shader.begin();
             video_texture.bind(0);

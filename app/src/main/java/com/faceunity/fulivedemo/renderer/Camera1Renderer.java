@@ -121,7 +121,9 @@ public class Camera1Renderer extends BaseCameraRenderer implements Camera.Previe
                 mPreviewCallbackBufferArray = new byte[PREVIEW_BUFFER_SIZE][mCameraWidth * mCameraHeight
                         * ImageFormat.getBitsPerPixel(ImageFormat.NV21) / 8];
             }
-
+            if(true){
+                //return;
+            }
             // must call after stopPreview
             camera.setPreviewCallbackWithBuffer(this);
             for (byte[] bytes : mPreviewCallbackBufferArray) {

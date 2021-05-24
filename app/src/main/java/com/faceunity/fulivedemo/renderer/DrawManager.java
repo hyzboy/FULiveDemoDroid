@@ -128,9 +128,9 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
 
             dv.SetLayout(0,0,1,1);
 
-            dv.init("/sdcard/Movies/ink_painting.mp4");
+            dv.init("/sdcard/Movies/Touch_The_Sky.mp4");
 
-            draw_object[3]=dv;
+            draw_object[0]=dv;
         }
     }
 
