@@ -107,6 +107,7 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
         screen_height=height;
 
         //创建文字绘制测试对象
+        if(draw_text_list.size()<=0)
         {
             DrawText dt=new DrawText();
 
@@ -123,12 +124,13 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
         }
 
         //创建视频测试
+        if(draw_object[0]==null)
         {
             DrawVideo dv=new DrawVideo(activity.getApplicationContext(),this);
 
             dv.SetLayout(0,0,1,1);
 
-            dv.init("/sdcard/Movies/Touch_The_Sky.mp4");
+            dv.init("/sdcard/Movies/1.mp4");
 
             draw_object[0]=dv;
         }
@@ -200,7 +202,7 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
     }
 
     @Override
-    public void onFrameAvailable(SurfaceTexture surfaceTexture)
+    public synchronized void onFrameAvailable(SurfaceTexture surfaceTexture)
     {
         updateSurface = true;
     }
