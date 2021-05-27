@@ -13,6 +13,7 @@ import com.faceunity.fulivedemo.drawobject.DrawObject;
 import com.faceunity.fulivedemo.drawobject.DrawText;
 import com.faceunity.fulivedemo.drawobject.DrawVideo;
 
+import java.nio.Buffer;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
@@ -143,6 +144,13 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
         synchronized (this) {
             updateSurface = false;
         }
+    }
+
+    public void getScreenshot(Buffer buf)
+    {
+        buf.clear();
+
+        GLES20.glReadPixels(0,0,screen_width,screen_height,GLES20.GL_RGBA,GLES20.GL_UNSIGNED_BYTE,buf);
     }
 
     public boolean setBitmap(int index,Bitmap bmp,int rotate)
