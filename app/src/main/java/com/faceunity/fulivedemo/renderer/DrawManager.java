@@ -131,7 +131,7 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
 
             dv.SetLayout(0,0,1,1);
 
-            dv.init("/sdcard/Movies/1.mp4");
+            dv.init("/sdcard/Movies/公众号璐过素材 (76)_49.webm");
 
             draw_object[0]=dv;
         }

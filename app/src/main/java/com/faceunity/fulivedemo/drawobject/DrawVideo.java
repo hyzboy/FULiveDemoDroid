@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.opengl.GLES20;
 import android.util.Log;
 
+import com.faceunity.fulivedemo.gl.ShaderModule;
 import com.faceunity.fulivedemo.videoplayer.VideoPlayer;
 
 /**
@@ -15,7 +16,7 @@ public class DrawVideo extends DrawObject
 {
     private VideoPlayer player=null;
     private GL2VideoTexture video_texture=null;
-    private ShaderOpaqueExternal shader=new ShaderOpaqueExternal();
+    private ShaderModule shader=new ShaderAlphaExternal();
 
     public DrawVideo(Context con, SurfaceTexture.OnFrameAvailableListener listener)
     {
@@ -51,7 +52,8 @@ public class DrawVideo extends DrawObject
     public void draw()
     {
         Log.e(TAG, "draw: " );
-        GLES20.glDisable(GLES20.GL_BLEND);
+        GLES20.glEnable(GLES20.GL_BLEND);
+        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA,GLES20.GL_ONE_MINUS_SRC_ALPHA);
         shader.begin();
             video_texture.bind(0);
             render_layout.bind(shader.maPositionHandle);
