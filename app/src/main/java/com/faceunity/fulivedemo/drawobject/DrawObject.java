@@ -13,6 +13,7 @@ public abstract class DrawObject extends GLClass
     {
         Bitmap,
         Video,
+        VideoAlpha,
         Text,
     };
 
@@ -36,6 +37,7 @@ public abstract class DrawObject extends GLClass
 
     public boolean isBitmap(){return type==ObjectType.Bitmap;}
     public boolean isVideo(){return type==ObjectType.Video;}
+    public boolean isVideoAlpha(){return type==ObjectType.VideoAlpha;}
     public boolean isText(){return type==ObjectType.Text;}
 
     public void SetLayout(float l,float t,float w,float h)

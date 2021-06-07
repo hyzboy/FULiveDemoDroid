@@ -8,9 +8,11 @@ public class ShaderAlphaExternal extends ShaderModule
             "#extension GL_OES_EGL_image_external : require\n"
                     + "precision mediump float;\n"
                     + "varying vec2 vTextureCoord;\n"
-                    + "uniform samplerExternalOES sTexture;\n"
+                    + "uniform samplerExternalOES sTextureRGB;\n"
+                    + "uniform samplerExternalOES sTextureAlpha;\n"
                     + "void main() {\n"
-                    + "  gl_FragColor = texture2D(sTexture, vTextureCoord);\n"
+                    + "  gl_FragColor = vec4(texture2D(sTextureRGB,   vTextureCoord).rgb,"
+                    + "                      texture2D(sTextureAlpha, vTextureCoord).r);\n"
                     + "}\n";
 
     @Override
