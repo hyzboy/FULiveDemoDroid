@@ -11,10 +11,9 @@ import com.faceunity.fulivedemo.async.GL2EventSetLayout;
 import com.faceunity.fulivedemo.drawobject.DrawBitmap;
 import com.faceunity.fulivedemo.drawobject.DrawObject;
 import com.faceunity.fulivedemo.drawobject.DrawText;
-import com.faceunity.fulivedemo.drawobject.DrawVideo;
 import com.faceunity.fulivedemo.drawobject.DrawVideoAlpha;
 
-import java.nio.Buffer;
+import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
@@ -150,7 +149,7 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
         }
     }
 
-    public void getScreenshot(Buffer buf)
+    public void getScreenshot(ByteBuffer buf)
     {
         buf.clear();
 
