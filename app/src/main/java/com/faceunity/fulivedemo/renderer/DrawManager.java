@@ -133,8 +133,8 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
 
             DrawVideoAlpha dv=new DrawVideoAlpha(activity.getApplicationContext(),this);
             dv.SetLayout(0,0,1,1);
-            dv.init("/storage/22F4-E1BB/Movies/2.mp4",
-                    "/storage/22F4-E1BB/Movies/2_alpha.mp4");
+            dv.init("/sdcard/Movies/2.mp4",
+                    "/sdcard/Movies/2_alpha.mp4");
 
             draw_object[0]=dv;
         }

@@ -18,6 +18,7 @@ public class ShaderText extends ShaderModule
                     "}\n";
 
     private int color_location=-1;
+    private int texture_location=-1;
 
     @Override
     public boolean init() {
@@ -31,6 +32,7 @@ public class ShaderText extends ShaderModule
         if (color_location == -1) {
             return (false);
         }
+        texture_location=GLES20.glGetUniformLocation(mProgram,"sTexture");
         return (true);
     }
 
@@ -45,5 +47,13 @@ public class ShaderText extends ShaderModule
         ClearGLError();
         GLES20.glUniform4fv(color_location,1,color,0);
         CheckGLError("SetTextColor,glUniform4fv()");
+    }
+
+    @Override
+    public void begin()
+    {
+        super.begin();
+
+        GLES20.glUniform1i(texture_location,0);
     }
 }
