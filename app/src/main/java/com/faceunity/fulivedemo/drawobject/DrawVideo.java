@@ -16,7 +16,7 @@ public class DrawVideo extends DrawObject
 {
     private VideoPlayer player=null;
     private GL2VideoTexture video_texture=null;
-    private ShaderModule shader=new ShaderAlphaExternal();
+    private ShaderModule shader=new ShaderOpaqueExternal();
 
     public DrawVideo(Context con, SurfaceTexture.OnFrameAvailableListener listener)
     {
