@@ -8,7 +8,7 @@ public class ShaderAlphaExternal extends ShaderModule
 {
     private final String mFragmentShaderAlphaExternal =
             "#extension GL_OES_EGL_image_external : require\n"
-                    + "precision mediump float;\n"
+                    + "precision highp float;\n"
                     + "varying vec2 vTextureCoord;\n"
                     + "uniform samplerExternalOES sTextureRGB;\n"
                     + "uniform samplerExternalOES sTextureAlpha;\n"
