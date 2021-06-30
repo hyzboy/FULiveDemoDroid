@@ -11,7 +11,9 @@ import com.faceunity.fulivedemo.async.GL2EventSetLayout;
 import com.faceunity.fulivedemo.drawobject.DrawBitmap;
 import com.faceunity.fulivedemo.drawobject.DrawObject;
 import com.faceunity.fulivedemo.drawobject.DrawText;
+import com.faceunity.fulivedemo.drawobject.DrawVideo;
 import com.faceunity.fulivedemo.drawobject.DrawVideoAlpha;
+import com.faceunity.fulivedemo.gl.QuadUV;
 
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
@@ -127,16 +129,23 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
         //创建视频测试
         if(draw_object[0]==null)
         {
-            //DrawVideo dv=new DrawVideo(activity.getApplicationContext(),this);
-            //dv.SetLayout(0,0,1,1);
-            //dv.init("/sdcard/Movies/公众号璐过素材 (76)_49.webm");
+            {
+                DrawVideo dv = new DrawVideo(activity.getApplicationContext(), this);
+                dv.SetLayout(0, 0, 1, 1);
+                dv.SetDirection(QuadUV.Direction.Vert);
+                dv.init("/sdcard/Movies/1.mp4");
 
-            DrawVideoAlpha dv=new DrawVideoAlpha(activity.getApplicationContext(),this);
-            dv.SetLayout(0,0,1,1);
-            dv.init("/sdcard/Movies/2.mp4",
-                    "/sdcard/Movies/2_alpha.mp4");
+                draw_object[0] = dv;
+            }
 
-            draw_object[0]=dv;
+            {
+                DrawVideoAlpha dv = new DrawVideoAlpha(activity.getApplicationContext(), this);
+                dv.SetLayout(0, 0, 1, 1);
+                dv.SetDirection(QuadUV.Direction.Vert);
+                dv.init("/sdcard/Movies/2.mp4", "/sdcard/Movies/2_alpha.mp4");
+
+                draw_object[1] = dv;
+            }
         }
     }
 

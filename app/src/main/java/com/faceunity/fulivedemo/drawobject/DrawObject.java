@@ -47,6 +47,7 @@ public abstract class DrawObject extends GLClass
     {
         render_layout.set(l,t,w,h);
     }
+    public void SetDirection(QuadUV.Direction dir){texture_uv.setDirection(dir);}
 
     public abstract void start();
     public abstract void update();

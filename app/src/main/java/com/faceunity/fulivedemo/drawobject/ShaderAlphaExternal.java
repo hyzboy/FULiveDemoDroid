@@ -15,7 +15,7 @@ public class ShaderAlphaExternal extends ShaderModule
                     + "void main() {\n"
                     + "  vec3  rgb  =texture2D(sTextureRGB,   vTextureCoord).rgb;\n"
                     + "  float alpha=texture2D(sTextureAlpha, vTextureCoord).r;\n"
-                    + "  gl_FragColor = vec4(rgb,alpha);"
+                    + "  gl_FragColor = vec4(rgb,alpha);\n"
                     + "}\n";
 
     private int texture_rgb_location=-1;
