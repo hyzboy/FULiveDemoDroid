@@ -12,7 +12,7 @@ public class DrawTextureAlpha extends DrawObject
 
     public DrawTextureAlpha()
     {
-        super(DrawObject.ObjectType.TextureAlpha);
+        super(DrawObject.ObjectType.TextureAlpha,true);
     }
 
     @Override

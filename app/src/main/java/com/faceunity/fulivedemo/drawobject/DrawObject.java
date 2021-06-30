@@ -20,14 +20,15 @@ public abstract class DrawObject extends GLClass
 
     private ObjectType type;
 
-    protected static final QuadUV texture_uv =new QuadUV();
+    protected QuadUV texture_uv=null;
 
     protected RenderLayout render_layout=new RenderLayout();
 
-    public DrawObject(ObjectType ot)
+    public DrawObject(ObjectType ot,boolean mirror)
     {
         super("DrawObject:"+ot.name());
         type=ot;
+        texture_uv=new QuadUV(mirror);
         render_layout.init();
     }
 
