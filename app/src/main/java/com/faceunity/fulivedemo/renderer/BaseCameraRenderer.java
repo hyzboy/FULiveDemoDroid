@@ -143,7 +143,7 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
         draw_manager.onSurfaceChanged(gl,width,height);     //by hyz
     }
 
-    private void FUDrawFrame()
+    private void FUUpdate()
     {
         if (mShotBitmap == null) {
             try {
@@ -166,7 +166,10 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
                         mCameraWidth, mCameraHeight, mMvpMatrix, mTexMatrix, mSurfaceTexture.getTimestamp());
             }
         }
+    }
 
+    private void FUDrawFrame()
+    {
         if (!mIsSwitchCamera) {
             if (m2DTexId > 0) {
                 mProgramTexture2d.drawFrame(m2DTexId, mRenderRotatedImage ? GlUtil.IDENTITY_MATRIX : mTexMatrix, mMvpMatrix);
@@ -191,6 +194,9 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
         if (mProgramTexture2d == null || mSurfaceTexture == null) {
             return;
         }
+
+        FUUpdate();
+        draw_manager.setFaceUnityTextureID(m2DTexId);
 
         draw_manager.update();
         draw_manager.onDrawBackground();

@@ -73,5 +73,7 @@ public class DrawVideoAlpha extends DrawObject
 
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP,0,4);
         shader.end();
+
+        alpha_texture.unbind(1);
     }
 }

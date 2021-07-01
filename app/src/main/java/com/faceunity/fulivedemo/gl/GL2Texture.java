@@ -71,6 +71,13 @@ public class GL2Texture extends com.faceunity.fulivedemo.gl.GLClass
         bind();
     }
 
+    public void unbind(int index)
+    {
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0+index);
+        GLES20.glBindTexture(texture_type,0);
+        GLES20.glDisable(texture_type);
+    }
+
     public int getID() {return texture_id;}
     public int getType(){return texture_type;}
 

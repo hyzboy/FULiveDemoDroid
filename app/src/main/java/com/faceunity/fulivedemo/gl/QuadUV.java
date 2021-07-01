@@ -33,10 +33,10 @@ public class QuadUV extends GL2FloatBuffer
             1.0f, 1.0f,};
 
     private float QuadUVDataMirrorV[] = {
-            1.0f, 0.0f,
-            1.0f, 1.0f,
+            0.0f, 1.0f,
             0.0f, 0.0f,
-            0.0f, 1.0f};
+            1.0f, 1.0f,
+            1.0f, 0.0f};
 
     private boolean mirror=false;
 

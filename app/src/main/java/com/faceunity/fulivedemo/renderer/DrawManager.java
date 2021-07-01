@@ -11,6 +11,7 @@ import com.faceunity.fulivedemo.async.GL2EventSetLayout;
 import com.faceunity.fulivedemo.drawobject.DrawBitmap;
 import com.faceunity.fulivedemo.drawobject.DrawObject;
 import com.faceunity.fulivedemo.drawobject.DrawText;
+import com.faceunity.fulivedemo.drawobject.DrawTextureAlpha;
 import com.faceunity.fulivedemo.drawobject.DrawVideo;
 import com.faceunity.fulivedemo.drawobject.DrawVideoAlpha;
 import com.faceunity.fulivedemo.gl.QuadUV;
@@ -129,24 +130,38 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
         //创建视频测试
         if(draw_object[0]==null)
         {
+//            {
+//                DrawVideo dv = new DrawVideo(activity.getApplicationContext(), this);
+//                dv.SetLayout(0, 0, 1, 1);
+//                dv.SetDirection(QuadUV.Direction.Vert);
+//                dv.init("/sdcard/Movies/1.mp4");
+//
+//                draw_object[0] = dv;
+//            }
+
+//            {
+//                DrawVideoAlpha dv = new DrawVideoAlpha(activity.getApplicationContext(), this);
+//                dv.SetLayout(0, 0, 1, 1);
+//                dv.SetDirection(QuadUV.Direction.Vert);
+//                dv.init("/sdcard/Movies/3.mp4", "/sdcard/Movies/3_alpha.mp4");
+//
+//                draw_object[1] = dv;
+//            }
+
             {
-                DrawVideo dv = new DrawVideo(activity.getApplicationContext(), this);
+                DrawTextureAlpha dv=new DrawTextureAlpha();
                 dv.SetLayout(0, 0, 1, 1);
                 dv.SetDirection(QuadUV.Direction.Vert);
-                dv.init("/sdcard/Movies/1.mp4");
 
-                draw_object[0] = dv;
-            }
-
-            {
-                DrawVideoAlpha dv = new DrawVideoAlpha(activity.getApplicationContext(), this);
-                dv.SetLayout(0, 0, 1, 1);
-                dv.SetDirection(QuadUV.Direction.Vert);
-                dv.init("/sdcard/Movies/2.mp4", "/sdcard/Movies/2_alpha.mp4");
-
-                draw_object[1] = dv;
+                draw_object[0]=dv;
             }
         }
+    }
+
+    public void setFaceUnityTextureID(int id)
+    {
+        if(draw_object[0].isTextureAlpha())
+            ((DrawTextureAlpha)draw_object[0]).setTextureID(id);
     }
 
     public void onSurfaceCreated(Activity act,GL10 gl, EGLConfig config)
