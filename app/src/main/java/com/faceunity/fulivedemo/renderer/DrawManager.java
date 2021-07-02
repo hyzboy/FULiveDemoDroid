@@ -130,31 +130,31 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
         //创建视频测试
         if(draw_object[0]==null)
         {
-//            {
-//                DrawVideo dv = new DrawVideo(activity.getApplicationContext(), this);
-//                dv.SetLayout(0, 0, 1, 1);
-//                dv.SetDirection(QuadUV.Direction.Vert);
-//                dv.init("/sdcard/Movies/1.mp4");
-//
-//                draw_object[0] = dv;
-//            }
-
-//            {
-//                DrawVideoAlpha dv = new DrawVideoAlpha(activity.getApplicationContext(), this);
-//                dv.SetLayout(0, 0, 1, 1);
-//                dv.SetDirection(QuadUV.Direction.Vert);
-//                dv.init("/sdcard/Movies/3.mp4", "/sdcard/Movies/3_alpha.mp4");
-//
-//                draw_object[1] = dv;
-//            }
-
             {
-                DrawTextureAlpha dv=new DrawTextureAlpha();
+                DrawVideo dv = new DrawVideo(activity.getApplicationContext(), this);
                 dv.SetLayout(0, 0, 1, 1);
                 dv.SetDirection(QuadUV.Direction.Vert);
+                dv.init("/sdcard/Movies/1.mp4");
 
-                draw_object[0]=dv;
+                draw_object[0] = dv;
             }
+
+            {
+                DrawVideoAlpha dv = new DrawVideoAlpha(activity.getApplicationContext(), this);
+                dv.SetLayout(0, 0, 1, 1);
+                dv.SetDirection(QuadUV.Direction.Vert);
+                dv.init("/sdcard/Movies/2.mp4", "/sdcard/Movies/2_alpha.mp4");
+
+                draw_object[1] = dv;
+            }
+
+//            {
+//                DrawTextureAlpha dv=new DrawTextureAlpha();
+//                dv.SetLayout(0, 0, 1, 1);
+//                dv.SetDirection(QuadUV.Direction.Vert);
+//
+//                draw_object[0]=dv;
+//            }
         }
     }
 
