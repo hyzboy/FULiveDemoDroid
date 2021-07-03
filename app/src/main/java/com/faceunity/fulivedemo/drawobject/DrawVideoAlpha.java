@@ -16,17 +16,17 @@ public class DrawVideoAlpha extends DrawObject
     private GL2VideoTexture alpha_texture =null;
     private ShaderModule shader=new ShaderAlphaExternal();
 
-    public DrawVideoAlpha(Context con, SurfaceTexture.OnFrameAvailableListener listener)
+    public DrawVideoAlpha(Context con)
     {
         super(ObjectType.Video,false);
 
         rgb_player =new VideoPlayer(con);
         rgb_texture = new GL2VideoTexture(rgb_player);
-        rgb_texture.create(listener);
+        rgb_texture.create();
 
         alpha_player =new VideoPlayer(con);
         alpha_texture = new GL2VideoTexture(alpha_player);
-        alpha_texture.create(listener);
+        alpha_texture.create();
     }
 
     public void init(String rgb_name,String a_name)

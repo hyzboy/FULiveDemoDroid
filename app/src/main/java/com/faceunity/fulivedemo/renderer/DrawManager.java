@@ -24,7 +24,7 @@ import java.util.Vector;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
+public class DrawManager
 {
     private final int FOREGROUND_OBJECT_COUNT=2;
     private final int BACKGROUND_OBJECT_COUNT=2;
@@ -35,8 +35,6 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
     private DrawObject draw_object[]={null,null,null,null};
     private Queue<GL2Event> event_queue=new LinkedList<GL2Event>();
     private Vector<DrawText> draw_text_list=new Vector<DrawText>();
-
-    private boolean updateSurface = false;
 
     DrawManager(){}
 
@@ -61,15 +59,10 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
     {
         RunAsyncEvent();
 
-        synchronized (this)
+        for(int i=0;i<BACKGROUND_OBJECT_COUNT;i++)
         {
-            if(updateSurface)
-            {
-                for(int i=0;i<MAX_DRAW_OBJECT;i++)
-                    if(draw_object[i]!=null)
-                        draw_object[i].update();
-
-                updateSurface = false;
+            if(draw_object[i]!=null){
+                draw_object[i].update();
             }
         }
     }
@@ -131,7 +124,7 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
         if(draw_object[0]==null)
         {
             {
-                DrawVideo dv = new DrawVideo(activity.getApplicationContext(), this);
+                DrawVideo dv = new DrawVideo(activity.getApplicationContext());
                 dv.SetLayout(0, 0, 1, 1);
                 dv.SetDirection(QuadUV.Direction.Vert);
                 dv.init("/sdcard/Movies/1.mp4");
@@ -140,7 +133,7 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
             }
 
             {
-                DrawVideoAlpha dv = new DrawVideoAlpha(activity.getApplicationContext(), this);
+                DrawVideoAlpha dv = new DrawVideoAlpha(activity.getApplicationContext());
                 dv.SetLayout(0, 0, 1, 1);
                 dv.SetDirection(QuadUV.Direction.Vert);
                 dv.init("/sdcard/Movies/2.mp4", "/sdcard/Movies/2_alpha.mp4");
@@ -167,10 +160,6 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
     public void onSurfaceCreated(Activity act,GL10 gl, EGLConfig config)
     {
         activity=act;
-
-        synchronized (this) {
-            updateSurface = false;
-        }
     }
 
     public void getScreenshot(ByteBuffer buf)
@@ -234,11 +223,5 @@ public class DrawManager implements SurfaceTexture.OnFrameAvailableListener
         if(obj==null)return;
 
         event_queue.add(new GL2EventSetLayout(obj,left,top,width,height));
-    }
-
-    @Override
-    public synchronized void onFrameAvailable(SurfaceTexture surfaceTexture)
-    {
-        updateSurface = true;
     }
 }

@@ -18,13 +18,13 @@ public class DrawVideo extends DrawObject
     private GL2VideoTexture video_texture=null;
     private ShaderModule shader=new ShaderOpaqueExternal();
 
-    public DrawVideo(Context con, SurfaceTexture.OnFrameAvailableListener listener)
+    public DrawVideo(Context con)
     {
         super(ObjectType.Video,false);
 
         player=new VideoPlayer(con);
         video_texture = new GL2VideoTexture(player);
-        video_texture.create(listener);
+        video_texture.create();
     }
 
     public void init(String name)
@@ -40,12 +40,11 @@ public class DrawVideo extends DrawObject
     }
 
     private String TAG=getClass().getSimpleName();
+
     @Override
     public void update()
     {
-        Log.e(TAG, "update: " );
-        if(video_texture!=null)
-            video_texture.update();
+        video_texture.update();
     }
 
     @Override

@@ -10,12 +10,14 @@ import com.faceunity.fulivedemo.videoplayer.VideoPlayer;
 
 import java.io.IOException;
 
-public class GL2VideoTexture extends GL2Texture implements MediaPlayerStateListener
+public class GL2VideoTexture extends GL2Texture implements MediaPlayerStateListener,SurfaceTexture.OnFrameAvailableListener
 {
     private final int GL_TEXTURE_EXTERNAL_OES = 0x8D65;
     private SurfaceTexture surfaceTexture=null;
     private Surface surface=null;
     private VideoPlayer player=null;
+
+    private boolean updateSurface=false;
 
     public GL2VideoTexture(VideoPlayer vp)
     {
@@ -27,10 +29,10 @@ public class GL2VideoTexture extends GL2Texture implements MediaPlayerStateListe
         player.setOnMediaPlayerStateListener(this);
     }
 
-    public void create(SurfaceTexture.OnFrameAvailableListener listener)
+    public void create()
     {
         surfaceTexture = new SurfaceTexture(super.texture_id);
-        surfaceTexture.setOnFrameAvailableListener(listener);
+        surfaceTexture.setOnFrameAvailableListener(this);
 
         surface = new Surface(surfaceTexture);
 
@@ -45,8 +47,16 @@ public class GL2VideoTexture extends GL2Texture implements MediaPlayerStateListe
 
     public void update()
     {
-        if(surfaceTexture!=null)
-            surfaceTexture.updateTexImage();
+        synchronized (this)
+        {
+            if(updateSurface)
+            {
+                if(surfaceTexture!=null)
+                    surfaceTexture.updateTexImage();
+
+                updateSurface=false;
+            }
+        }
     }
 
     @Override
@@ -67,8 +77,11 @@ public class GL2VideoTexture extends GL2Texture implements MediaPlayerStateListe
     }
 
     @Override
-    public void onPlayStop()
-    {
+    public void onPlayStop(){}
 
+    @Override
+    public synchronized void onFrameAvailable(SurfaceTexture surfaceTexture)
+    {
+        updateSurface=true;
     }
 }
