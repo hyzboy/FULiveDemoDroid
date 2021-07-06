@@ -31,11 +31,17 @@ public class GL2Texture extends com.faceunity.fulivedemo.gl.GLClass
 
         bind();
 
-        GLES20.glTexParameterf(texture_type, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-        CheckGLError("glTexParameterf(MIN_FILTER,LINEAR)");
+        GLES20.glTexParameteri(texture_type, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+        CheckGLError("glTexParameteri(MIN_FILTER,LINEAR)");
 
-        GLES20.glTexParameterf(texture_type, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-        CheckGLError("glTexParameterf(MAG_FILTER,LINEAR)");
+        GLES20.glTexParameteri(texture_type, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+        CheckGLError("glTexParameteri(MAG_FILTER,LINEAR)");
+
+        GLES20.glTexParameteri(texture_type, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+        CheckGLError("glTexParameteri(WRAP_S,CLAMP_TO_EDGE)");
+
+        GLES20.glTexParameteri(texture_type, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+        CheckGLError("glTexParameteri(WRAP_T,CLAMP_TO_EDGE)");
     }
 
     public void init(int tt)

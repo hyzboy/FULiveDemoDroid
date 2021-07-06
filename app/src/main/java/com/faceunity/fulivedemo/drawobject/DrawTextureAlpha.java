@@ -39,6 +39,9 @@ public class DrawTextureAlpha extends DrawObject
             GLES20.glEnable(GLES20.GL_TEXTURE_2D);
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureID);
 
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+
         render_layout.bind(shader.maPositionHandle);
         texture_uv.bind(shader.maTexCoordHandle);
 
