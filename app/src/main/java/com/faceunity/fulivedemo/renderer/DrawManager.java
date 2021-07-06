@@ -14,6 +14,7 @@ import com.faceunity.fulivedemo.drawobject.DrawText;
 import com.faceunity.fulivedemo.drawobject.DrawTextureAlpha;
 import com.faceunity.fulivedemo.drawobject.DrawVideo;
 import com.faceunity.fulivedemo.drawobject.DrawVideoAlpha;
+import com.faceunity.fulivedemo.drawobject.DrawVideoLR;
 import com.faceunity.fulivedemo.gl.QuadUV;
 
 import java.nio.ByteBuffer;
@@ -133,13 +134,21 @@ public class DrawManager
             }
 
             {
-                DrawVideoAlpha dv = new DrawVideoAlpha(activity.getApplicationContext());
+                DrawVideoLR dv = new DrawVideoLR(activity.getApplicationContext());
                 dv.SetLayout(0, 0, 1, 1);
-                dv.SetDirection(QuadUV.Direction.Vert);
-                dv.init("/sdcard/Movies/2.mp4", "/sdcard/Movies/2_alpha.mp4");
+                dv.init("/sdcard/Movies/fireworks.mp4");
 
                 draw_object[1] = dv;
             }
+
+//            {
+//                DrawVideoAlpha dv = new DrawVideoAlpha(activity.getApplicationContext());
+//                dv.SetLayout(0, 0, 1, 1);
+//                dv.SetDirection(QuadUV.Direction.Vert);
+//                dv.init("/sdcard/Movies/2.mp4", "/sdcard/Movies/2_alpha.mp4");
+//
+//                draw_object[1] = dv;
+//            }
 
 //            {
 //                DrawTextureAlpha dv=new DrawTextureAlpha();

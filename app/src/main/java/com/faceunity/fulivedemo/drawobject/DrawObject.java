@@ -14,6 +14,7 @@ public abstract class DrawObject extends GLClass
         Bitmap,
         Video,
         VideoAlpha,
+        VideoAlphaLR,
         Text,
         TextureAlpha,       //用于画FU人物
     };
@@ -40,6 +41,7 @@ public abstract class DrawObject extends GLClass
     public boolean isBitmap(){return type==ObjectType.Bitmap;}
     public boolean isVideo(){return type==ObjectType.Video;}
     public boolean isVideoAlpha(){return type==ObjectType.VideoAlpha;}
+    public boolean isVideoAlphaLR(){return type==ObjectType.VideoAlphaLR;}
     public boolean isText(){return type==ObjectType.Text;}
     public boolean isTextureAlpha(){return type==ObjectType.TextureAlpha;}
 
