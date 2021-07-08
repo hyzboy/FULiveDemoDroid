@@ -7,8 +7,7 @@ import com.faceunity.fulivedemo.gl.ShaderModule;
 public class ShaderOpaque extends ShaderModule {
 
     private final String mFragmentShaderOpaque =
-                      "#extension GL_OES_EGL_image_external : require\n"
-                    + "precision mediump float;\n"
+                      "precision highp float;\n"
                     + "varying vec2 vTextureCoord;\n"
                     + "uniform sampler2D sTexture;\n"
                     + "void main() {\n"
