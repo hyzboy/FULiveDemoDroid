@@ -41,6 +41,7 @@ public class QuadUV extends GL2FloatBuffer
     private boolean mirror=false;
     private Direction direction=Direction.Horz;
     private float scale_x=1.0f,scale_y=1.0f;
+    private float offset_x=0.0f,offset_y=0.0f;
 
     private float FinalData[]=new float[8];
 
@@ -60,9 +61,9 @@ public class QuadUV extends GL2FloatBuffer
 
         for(int i=0;i<4;i++)
         {
-            FinalData[pos]=0.5f+(origin[pos]-0.5f)/scale_x;
+            FinalData[pos]=offset_x+0.5f+(origin[pos]-0.5f)/scale_x;
             ++pos;
-            FinalData[pos]=0.5f+(origin[pos]-0.5f)/scale_y;
+            FinalData[pos]=offset_y+0.5f+(origin[pos]-0.5f)/scale_y;
             ++pos;
         }
 
@@ -98,6 +99,14 @@ public class QuadUV extends GL2FloatBuffer
     public void setDirection(Direction dir)
     {
         direction=dir;
+
+        updateData();
+    }
+
+    public void setOffset(float ox,float oy)
+    {
+        offset_x=ox;
+        offset_y=oy;
 
         updateData();
     }

@@ -51,6 +51,7 @@ public abstract class DrawObject extends GLClass
     }
     public void SetDirection(QuadUV.Direction dir){texture_uv.setDirection(dir);}
     public void SetScale(float x,float y){texture_uv.setScale(x,y);}
+    public void SetOffset(float x,float y){texture_uv.setOffset(x,y);}
 
     public abstract void start();
     public abstract void update();
