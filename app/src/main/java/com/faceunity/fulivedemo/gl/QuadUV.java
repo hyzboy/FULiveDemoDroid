@@ -55,15 +55,23 @@ public class QuadUV extends GL2FloatBuffer
             init(QuadUVData);
     }
 
+    private float ComputeScale(float op,float scale,float offset)
+    {
+        float nl=1.0f/scale;
+        float gap=(1.0f-nl)*0.5f;
+
+        return (0.5f+(op-0.5f)*nl)+(offset*gap);
+    }
+
     private void ScaleData(float[] origin)
     {
         int pos=0;
 
         for(int i=0;i<4;i++)
         {
-            FinalData[pos]=offset_x+0.5f+(origin[pos]-0.5f)/scale_x;
+            FinalData[pos]=ComputeScale(origin[pos],scale_x,offset_x);
             ++pos;
-            FinalData[pos]=offset_y+0.5f+(origin[pos]-0.5f)/scale_y;
+            FinalData[pos]=ComputeScale(origin[pos],scale_y,offset_y);
             ++pos;
         }
 

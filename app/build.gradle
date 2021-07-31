@@ -6,8 +6,8 @@ def appName = 'FULiveDemo'
 def renameApk = false
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion 30
+    buildToolsVersion '30.0.3'
     defaultConfig {
         applicationId "com.faceunity.${appName}".toLowerCase()
         minSdkVersion rootProject.ext.minSdkVersion
@@ -44,6 +44,7 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+    ndkVersion '22.1.7171670'
 }
 
 dependencies {
