@@ -34,16 +34,6 @@ public class DrawText extends DrawObject
 
     private float color[]={1,1,0,1};
 
-    private int power_to_2(int value)
-    {
-        int i=1;
-
-        while(i<value)
-            i<<=1;
-
-        return i;
-    }
-
     public DrawText()
     {
         super(ObjectType.Text,false);
@@ -83,8 +73,8 @@ public class DrawText extends DrawObject
 
         text_height=bounds.height();
 
-        int w=power_to_2(bounds.width());
-        int h=power_to_2(bounds.height());
+        int w=GL2Texture.power_to_2(bounds.width());
+        int h=GL2Texture.power_to_2(bounds.height());
 
         if(w> bmp_width ||h> bmp_height)
         {

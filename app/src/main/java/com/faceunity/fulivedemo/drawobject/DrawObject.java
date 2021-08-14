@@ -17,6 +17,7 @@ public abstract class DrawObject extends GLClass
         VideoAlphaLR,
         Text,
         TextureAlpha,       //用于画FU人物
+        GIF,
     };
 
     private ObjectType type;
@@ -44,6 +45,7 @@ public abstract class DrawObject extends GLClass
     public boolean isVideoAlphaLR(){return type==ObjectType.VideoAlphaLR;}
     public boolean isText(){return type==ObjectType.Text;}
     public boolean isTextureAlpha(){return type==ObjectType.TextureAlpha;}
+    public boolean isGIF(){return type==ObjectType.GIF;}
 
     public void SetLayout(float l,float t,float w,float h)
     {

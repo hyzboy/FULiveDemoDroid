@@ -2,21 +2,19 @@ package com.faceunity.fulivedemo.renderer;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.SurfaceTexture;
 import android.opengl.GLES20;
 
 import com.faceunity.fulivedemo.async.GL2Event;
 import com.faceunity.fulivedemo.async.GL2EventSetBitmap;
 import com.faceunity.fulivedemo.async.GL2EventSetLayout;
 import com.faceunity.fulivedemo.drawobject.DrawBitmap;
+import com.faceunity.fulivedemo.drawobject.DrawGIF;
 import com.faceunity.fulivedemo.drawobject.DrawObject;
 import com.faceunity.fulivedemo.drawobject.DrawText;
 import com.faceunity.fulivedemo.drawobject.DrawTextureAlpha;
 import com.faceunity.fulivedemo.drawobject.DrawVideo;
-import com.faceunity.fulivedemo.drawobject.DrawVideoAlpha;
-import com.faceunity.fulivedemo.drawobject.DrawVideoLR;
-import com.faceunity.fulivedemo.gl.QuadUV;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -99,7 +97,7 @@ public class DrawManager
             dt.draw();
     }
 
-    public void onSurfaceChanged(GL10 gl, int width, int height)
+    public void onSurfaceChanged(GL10 gl, int width, int height) throws IOException
     {
         screen_width=width;
         screen_height=height;
@@ -172,6 +170,30 @@ public class DrawManager
 //
 //                draw_object[0]=dv;
 //            }
+
+            {
+                DrawGIF gif=new DrawGIF();
+
+                gif.Load("/sdcard/Pictures/a19.gif");
+
+                float gif_width=gif.GetGifWidth();
+                float gif_height=gif.GetGifHeight();
+
+                float scale=1.0f;
+                float fw=gif_width/(float)screen_width;                   //求出以浮点比例为准的宽
+                float fh=gif_height/(float)screen_height;                 //求出以浮点比例为准的高
+
+                while(fw<0.5f&&fh<0.5f)     //小于一半，太小了，放大
+                {
+                    fw*=2.0f;
+                    fh*=2.0f;
+                }
+
+                gif.SetLayout((1.0f-fw)/2.0f,(1.0f-fh)/2.0f,fw,fh);           //距中
+
+                gif.start();
+                draw_object[1] = gif;
+            }
         }
     }
 

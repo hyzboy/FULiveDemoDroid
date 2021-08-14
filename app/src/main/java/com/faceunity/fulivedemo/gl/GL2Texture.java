@@ -102,4 +102,14 @@ public class GL2Texture extends com.faceunity.fulivedemo.gl.GLClass
         if(old_textures[0]!=-1)
             GLES20.glDeleteTextures(1, old_textures, 0);
     }
+
+    static public int power_to_2(int value)
+    {
+        int i=1;
+
+        while(i<value)
+            i<<=1;
+
+        return i;
+    }
 }

@@ -21,6 +21,7 @@ import com.faceunity.gles.ProgramTexture2d;
 import com.faceunity.gles.ProgramTextureOES;
 import com.faceunity.gles.core.GlUtil;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -140,7 +141,13 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
         mSmallViewportY = mSmallViewportBottomPadding;
         mOnRendererStatusListener.onSurfaceChanged(width, height);
 
-        draw_manager.onSurfaceChanged(gl,width,height);     //by hyz
+        try
+        {
+            draw_manager.onSurfaceChanged(gl,width,height);     //by hyz
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private void FUUpdate()

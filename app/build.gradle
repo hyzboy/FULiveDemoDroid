@@ -10,8 +10,8 @@ android {
     buildToolsVersion '30.0.3'
     defaultConfig {
         applicationId "com.faceunity.${appName}".toLowerCase()
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion 29
+        targetSdkVersion 30
         versionCode rootProject.ext.namaSdkVersionCode
         versionName rootProject.ext.namaSdkVersionName
         manifestPlaceholders = ['appName': appName]
@@ -35,6 +35,23 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    buildscript {
+        repositories {
+            mavenCentral()
+        }
+    }
+    allprojects {
+        repositories {
+            mavenCentral()
+        }
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    }
+    dependencies {
+        implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
     }
     lintOptions {
         abortOnError false
@@ -60,4 +77,5 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.11.3'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
 }
