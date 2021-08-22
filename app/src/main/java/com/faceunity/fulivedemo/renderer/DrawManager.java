@@ -174,10 +174,21 @@ public class DrawManager
             {
                 DrawGIF gif=new DrawGIF();
 
-                gif.Load("/sdcard/Pictures/a19.gif");
+                gif.Load("/sdcard/Pictures/Img00000285.GIF");
 
                 float gif_width=gif.GetGifWidth();
                 float gif_height=gif.GetGifHeight();
+
+                //使用自定义显示范围
+                {
+                    final float cus_w=0.4f;      //自定义显示范围宽度
+                    final float cus_h=0.4f;      //自定义显示范围高度
+
+                    gif.SetCustomViewScope(0.1f,0.1f,cus_w,cus_h);                //设定自定义显示范围
+
+                    gif_width*=cus_w;
+                    gif_height*=cus_h;
+                }
 
                 float scale=1.0f;
                 float fw=gif_width/(float)screen_width;                   //求出以浮点比例为准的宽

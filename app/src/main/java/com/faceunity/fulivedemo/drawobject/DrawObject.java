@@ -55,6 +55,11 @@ public abstract class DrawObject extends GLClass
     public void SetScale(float x,float y){texture_uv.setScale(x,y);}
     public void SetOffset(float x,float y){texture_uv.setOffset(x,y);}
 
+    public void SetCustomViewScope(float l,float t,float w,float h)
+    {
+        texture_uv.setCustom(l,t,w,h);
+    }
+
     public abstract void start();
     public abstract void update();
     public abstract void draw();

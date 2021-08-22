@@ -1,23 +1,9 @@
 package com.faceunity.fulivedemo.drawobject;
 
-import static android.graphics.Bitmap.createBitmap;
-
-import android.graphics.Bitmap;
-import android.graphics.ImageDecoder;
-import android.graphics.drawable.AnimatedImageDrawable;
 import android.opengl.GLES20;
-import android.util.Size;
 
-import androidx.annotation.NonNull;
-
-import com.faceunity.fulivedemo.gl.GL2Texture;
-
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
-import pl.droidsonroids.gif.AnimationListener;
-import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifOptions;
 import pl.droidsonroids.gif.GifTexImage2D;
 import pl.droidsonroids.gif.InputSource;
@@ -78,7 +64,6 @@ public class DrawGIF extends DrawObject
     {
         return gif_tex.getWidth();
     }
-
     public int GetGifHeight()
     {
         return gif_tex.getHeight();

@@ -5,7 +5,8 @@ public class QuadUV extends GL2FloatBuffer
     public enum Direction
     {
         Horz,   //横屏
-        Vert   //坚屏
+        Vert,   //坚屏
+        Custom, //自定义
     }
 
     /*
@@ -87,7 +88,7 @@ public class QuadUV extends GL2FloatBuffer
             else
                 ScaleData(QuadUVData);
         }
-        else
+        else if(direction==Direction.Vert)
         {
             if(mirror)
                 ScaleData(QuadUVDataMirrorV);
@@ -117,5 +118,25 @@ public class QuadUV extends GL2FloatBuffer
         offset_y=oy;
 
         updateData();
+    }
+
+    public void setCustom(float l,float t,float w,float h)
+    {
+        direction=Direction.Custom;
+
+/*
+        2--3
+        |  |
+        0--1
+     */
+        final float b=t+h;
+        final float r=l+w;
+
+        FinalData[0]=l;FinalData[1]=b;
+        FinalData[2]=r;FinalData[3]=b;
+        FinalData[4]=l;FinalData[5]=t;
+        FinalData[6]=r;FinalData[7]=t;
+
+        setData(FinalData);
     }
 }
