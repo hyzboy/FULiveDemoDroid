@@ -2,6 +2,8 @@ package com.faceunity.fulivedemo.drawobject;
 
 import android.opengl.GLES20;
 
+import com.faceunity.fulivedemo.gl.GL2Texture;
+
 import java.io.IOException;
 
 import pl.droidsonroids.gif.GifOptions;
@@ -10,7 +12,10 @@ import pl.droidsonroids.gif.InputSource;
 
 public class DrawGIF extends DrawObject
 {
+    private GL2Texture tex=new GL2Texture();
     private GifTexImage2D gif_tex=null;
+    private int last_frame=-1;
+
     private ShaderAlpha shader=new ShaderAlpha();
 
     public DrawGIF()
@@ -26,8 +31,11 @@ public class DrawGIF extends DrawObject
 
         options.setInIsOpaque(false);
 
-        gif_tex=new GifTexImage2D(file,options);
+        tex.init(GLES20.GL_TEXTURE_2D);
+        tex.bind();;
 
+        gif_tex=new GifTexImage2D(file,options);
+        gif_tex.glTexImage2D(GLES20.GL_TEXTURE_2D,0);
 
         return(true);
     }
@@ -50,7 +58,14 @@ public class DrawGIF extends DrawObject
         GLES20.glEnable(GLES20.GL_BLEND);
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA,GLES20.GL_ONE_MINUS_SRC_ALPHA);
         shader.begin();
-            gif_tex.glTexImage2D(GLES20.GL_TEXTURE_2D,0);
+
+            tex.bind(0);
+            if(last_frame!=GetCurrentFrameIndex())
+            {
+                last_frame=GetCurrentFrameIndex();
+                gif_tex.glTexImage2D(GLES20.GL_TEXTURE_2D,0);
+            }
+
             render_layout.bind(shader.maPositionHandle);
             texture_uv.bind(shader.maTexCoordHandle);
 
