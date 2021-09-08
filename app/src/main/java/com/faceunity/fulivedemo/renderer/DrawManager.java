@@ -13,6 +13,7 @@ import com.faceunity.fulivedemo.drawobject.DrawObject;
 import com.faceunity.fulivedemo.drawobject.DrawText;
 import com.faceunity.fulivedemo.drawobject.DrawTextureAlpha;
 import com.faceunity.fulivedemo.drawobject.DrawVideo;
+import com.faceunity.fulivedemo.gl.GL2FBO;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -25,6 +26,13 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class DrawManager
 {
+    private GL2FBO fbo=null;
+
+    private final int MAX_SCREEN_WIDTH  =720;   //最大屏幕宽度
+    private final int SCREEN_SIZE_ALIGN =16;    //宽高对齐象素
+
+    private int fbo_width,fbo_height;
+
     private final int FOREGROUND_OBJECT_COUNT=2;
     private final int BACKGROUND_OBJECT_COUNT=2;
     private final int MAX_DRAW_OBJECT=FOREGROUND_OBJECT_COUNT+BACKGROUND_OBJECT_COUNT;
@@ -70,6 +78,8 @@ public class DrawManager
     {
         GLES20.glGetError();        //清空错误
 
+        fbo.Begin();
+
         GLES20.glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
         GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
 
@@ -79,11 +89,15 @@ public class DrawManager
                 draw_object[i].draw();
             }
         }
+
+        fbo.End();
     }
 
     public void onDrawForeground()
     {
         GLES20.glGetError();        //清空错误
+
+        fbo.Begin();
 
         for(int i=BACKGROUND_OBJECT_COUNT;
                 i<BACKGROUND_OBJECT_COUNT+FOREGROUND_OBJECT_COUNT;i++)
@@ -95,12 +109,43 @@ public class DrawManager
 
         for(DrawText dt:draw_text_list)
             dt.draw();
+
+        fbo.End();
+    }
+
+    public int GetTextureID()
+    {
+        return fbo.GetTextureID();
+    }
+
+    private int GetAlign(int value)
+    {
+        return ((value+ SCREEN_SIZE_ALIGN -1)/ SCREEN_SIZE_ALIGN)* SCREEN_SIZE_ALIGN;
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height) throws IOException
     {
         screen_width=width;
         screen_height=height;
+
+        if(screen_width>MAX_SCREEN_WIDTH)
+        {
+            fbo_width=MAX_SCREEN_WIDTH;
+
+            double tmp=MAX_SCREEN_WIDTH;
+            tmp/=(double)screen_width;
+            tmp*=(double)screen_height;
+
+            fbo_height=GetAlign((int)tmp);
+        }
+        else
+        {
+            fbo_width=GetAlign(screen_width);
+            fbo_height=GetAlign(screen_height);
+        }
+
+        fbo=new GL2FBO();
+        fbo.init(fbo_width,fbo_height);
 
         //创建文字绘制测试对象
         if(draw_text_list.size()<=0)
@@ -131,9 +176,6 @@ public class DrawManager
                 //屏幕为1080x1920
                 //则实际显示为，高度从1080被放大到了1920即1920/1080=1.777倍，而宽度被从1920缩小到了1080，同为1.777倍。所需做的是，将宽度放大1.777*1.777=3.16倍
 
-                final float screen_height=1920;       //屏幕高
-                final float screen_width=1080;        //屏幕宽
-
                 final float movie_width=1920;         //影片宽
                 final float movie_height=1080;        //影片高
 
@@ -149,7 +191,7 @@ public class DrawManager
 
                 dv.SetOffset(1.0f,0);       //设定偏移，-1为最左，+1为最右
 
-                dv.init("/sdcard/Movies/We Are Crytek.mp4");
+                dv.init("/sdcard/Vedio/the boys 720P.mp4");
 
                 draw_object[0] = dv;
             }
@@ -170,41 +212,41 @@ public class DrawManager
 //
 //                draw_object[0]=dv;
 //            }
-
-            {
-                DrawGIF gif=new DrawGIF();
-
-                gif.Load("/sdcard/Pictures/Img00000285.GIF");
-
-                float gif_width=gif.GetGifWidth();
-                float gif_height=gif.GetGifHeight();
-
-                //使用自定义显示范围
-                {
-                    final float cus_w=0.4f;      //自定义显示范围宽度
-                    final float cus_h=0.4f;      //自定义显示范围高度
-
-                    gif.SetCustomViewScope(0.1f,0.1f,cus_w,cus_h);                //设定自定义显示范围
-
-                    gif_width*=cus_w;
-                    gif_height*=cus_h;
-                }
-
-                float scale=1.0f;
-                float fw=gif_width/(float)screen_width;                   //求出以浮点比例为准的宽
-                float fh=gif_height/(float)screen_height;                 //求出以浮点比例为准的高
-
-                while(fw<0.5f&&fh<0.5f)     //小于一半，太小了，放大
-                {
-                    fw*=2.0f;
-                    fh*=2.0f;
-                }
-
-                gif.SetLayout((1.0f-fw)/2.0f,(1.0f-fh)/2.0f,fw,fh);           //距中
-
-                gif.start();
-                draw_object[1] = gif;
-            }
+//
+//            {
+//                DrawGIF gif=new DrawGIF();
+//
+//                gif.Load("/sdcard/Pictures/Img00000285.GIF");
+//
+//                float gif_width=gif.GetGifWidth();
+//                float gif_height=gif.GetGifHeight();
+//
+//                //使用自定义显示范围
+//                {
+//                    final float cus_w=0.4f;      //自定义显示范围宽度
+//                    final float cus_h=0.4f;      //自定义显示范围高度
+//
+//                    gif.SetCustomViewScope(0.1f,0.1f,cus_w,cus_h);                //设定自定义显示范围
+//
+//                    gif_width*=cus_w;
+//                    gif_height*=cus_h;
+//                }
+//
+//                float scale=1.0f;
+//                float fw=gif_width/(float)screen_width;                   //求出以浮点比例为准的宽
+//                float fh=gif_height/(float)screen_height;                 //求出以浮点比例为准的高
+//
+//                while(fw<0.5f&&fh<0.5f)     //小于一半，太小了，放大
+//                {
+//                    fw*=2.0f;
+//                    fh*=2.0f;
+//                }
+//
+//                gif.SetLayout((1.0f-fw)/2.0f,(1.0f-fh)/2.0f,fw,fh);           //距中
+//
+//                gif.start();
+//                draw_object[1] = gif;
+//            }
         }
     }
 
@@ -223,7 +265,9 @@ public class DrawManager
     {
         buf.clear();
 
-        GLES20.glReadPixels(0,0,screen_width,screen_height,GLES20.GL_RGBA,GLES20.GL_UNSIGNED_BYTE,buf);
+        fbo.Begin();
+        GLES20.glReadPixels(0,0,fbo_width,fbo_height,GLES20.GL_RGBA,GLES20.GL_UNSIGNED_BYTE,buf);
+        fbo.End();
     }
 
     public boolean setBitmap(int index,Bitmap bmp,int rotate)
