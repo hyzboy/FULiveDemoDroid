@@ -31,8 +31,6 @@ public class DrawManager
     private final int MAX_SCREEN_WIDTH  =720;   //最大屏幕宽度
     private final int SCREEN_SIZE_ALIGN =16;    //宽高对齐象素
 
-    private int fbo_width,fbo_height;
-
     private final int FOREGROUND_OBJECT_COUNT=2;
     private final int BACKGROUND_OBJECT_COUNT=2;
     private final int MAX_DRAW_OBJECT=FOREGROUND_OBJECT_COUNT+BACKGROUND_OBJECT_COUNT;
@@ -49,8 +47,6 @@ public class DrawManager
     {
         return MAX_DRAW_OBJECT;
     }
-    public int GetScreenWidth(){return screen_width;}
-    public int GetScreenHeight(){return screen_height;}
 
     private void RunAsyncEvent()
     {
@@ -127,6 +123,9 @@ public class DrawManager
     {
         screen_width=width;
         screen_height=height;
+
+        int fbo_width;
+        int fbo_height;
 
         if(screen_width>MAX_SCREEN_WIDTH)
         {
@@ -259,15 +258,6 @@ public class DrawManager
     public void onSurfaceCreated(Activity act,GL10 gl, EGLConfig config)
     {
         activity=act;
-    }
-
-    public void getScreenshot(ByteBuffer buf)
-    {
-        buf.clear();
-
-        fbo.Begin();
-        GLES20.glReadPixels(0,0,fbo_width,fbo_height,GLES20.GL_RGBA,GLES20.GL_UNSIGNED_BYTE,buf);
-        fbo.End();
     }
 
     public boolean setBitmap(int index,Bitmap bmp,int rotate)

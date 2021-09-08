@@ -3,6 +3,8 @@ package com.faceunity.fulivedemo.gl;
 import android.opengl.GLES20;
 import android.util.Log;
 
+import java.nio.ByteBuffer;
+
 public class GL2FBO extends GLClass
 {
     private int width,height;
@@ -60,5 +62,16 @@ public class GL2FBO extends GLClass
     public int GetTextureID()
     {
         return texture[0];
+    }
+    public int GetWidth(){return width;}
+    public int GetHeight(){return height;}
+
+    public void getScreenshot(ByteBuffer buf)
+    {
+        buf.clear();
+
+        Begin();
+        GLES20.glReadPixels(0,0,width,height,GLES20.GL_RGBA,GLES20.GL_UNSIGNED_BYTE,buf);
+        End();
     }
 }
