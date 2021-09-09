@@ -14,6 +14,7 @@ import com.faceunity.fulivedemo.drawobject.DrawText;
 import com.faceunity.fulivedemo.drawobject.DrawTextureAlpha;
 import com.faceunity.fulivedemo.drawobject.DrawVideo;
 import com.faceunity.fulivedemo.gl.GL2FBO;
+import com.faceunity.fulivedemo.gl.QuadUV;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -70,11 +71,11 @@ public class DrawManager
         }
     }
 
+    public GL2FBO GetFBO(){return fbo;}
+
     public void onDrawBackground()
     {
         GLES20.glGetError();        //清空错误
-
-        fbo.Begin();
 
         GLES20.glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
         GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
@@ -85,15 +86,11 @@ public class DrawManager
                 draw_object[i].draw();
             }
         }
-
-        fbo.End();
     }
 
     public void onDrawForeground()
     {
         GLES20.glGetError();        //清空错误
-
-        fbo.Begin();
 
         for(int i=BACKGROUND_OBJECT_COUNT;
                 i<BACKGROUND_OBJECT_COUNT+FOREGROUND_OBJECT_COUNT;i++)
@@ -105,8 +102,6 @@ public class DrawManager
 
         for(DrawText dt:draw_text_list)
             dt.draw();
-
-        fbo.End();
     }
 
     public int GetTextureID()
@@ -166,34 +161,34 @@ public class DrawManager
         //创建视频测试
         if(draw_object[0]==null)
         {
-            {
-                DrawVideo dv = new DrawVideo(activity.getApplicationContext());
-                dv.SetLayout(0, 0, 1, 1);
-                //dv.SetDirection(QuadUV.Direction.Vert);
-
-                //假设影片为1920x1080
-                //屏幕为1080x1920
-                //则实际显示为，高度从1080被放大到了1920即1920/1080=1.777倍，而宽度被从1920缩小到了1080，同为1.777倍。所需做的是，将宽度放大1.777*1.777=3.16倍
-
-                final float movie_width=1920;         //影片宽
-                final float movie_height=1080;        //影片高
-
-                //影片高放大倍数
-                final float v_zoom_out=screen_height/movie_height;
-                //影片宽缩小倍数
-                final float h_zoom_in=movie_width/screen_width;
-
-                //最终影片宽所需放大倍数
-                final float v_scale=h_zoom_in*v_zoom_out;
-
-                dv.SetScale(v_scale,1.0f);
-
-                dv.SetOffset(1.0f,0);       //设定偏移，-1为最左，+1为最右
-
-                dv.init("/sdcard/Vedio/the boys 720P.mp4");
-
-                draw_object[0] = dv;
-            }
+//            {
+//                DrawVideo dv = new DrawVideo(activity.getApplicationContext());
+//                dv.SetLayout(0, 0, 1, 1);
+//                //dv.SetDirection(QuadUV.Direction.Vert);
+//
+//                //假设影片为1920x1080
+//                //屏幕为1080x1920
+//                //则实际显示为，高度从1080被放大到了1920即1920/1080=1.777倍，而宽度被从1920缩小到了1080，同为1.777倍。所需做的是，将宽度放大1.777*1.777=3.16倍
+//
+//                final float movie_width=1920;         //影片宽
+//                final float movie_height=1080;        //影片高
+//
+//                //影片高放大倍数
+//                final float v_zoom_out=screen_height/movie_height;
+//                //影片宽缩小倍数
+//                final float h_zoom_in=movie_width/screen_width;
+//
+//                //最终影片宽所需放大倍数
+//                final float v_scale=h_zoom_in*v_zoom_out;
+//
+//                dv.SetScale(v_scale,1.0f);
+//
+//                dv.SetOffset(1.0f,0);       //设定偏移，-1为最左，+1为最右
+//
+//                dv.init("/sdcard/Movies/We Are Crytek.mp4");
+//
+//                draw_object[0] = dv;
+//            }
 
 //            {
 //                DrawVideoAlpha dv = new DrawVideoAlpha(activity.getApplicationContext());
@@ -204,23 +199,23 @@ public class DrawManager
 //                draw_object[1] = dv;
 //            }
 
-//            {
-//                DrawTextureAlpha dv=new DrawTextureAlpha();
-//                dv.SetLayout(0, 0, 1, 1);
-//                dv.SetDirection(QuadUV.Direction.Vert);
-//
-//                draw_object[0]=dv;
-//            }
-//
-//            {
-//                DrawGIF gif=new DrawGIF();
-//
-//                gif.Load("/sdcard/Pictures/Img00000285.GIF");
-//
-//                float gif_width=gif.GetGifWidth();
-//                float gif_height=gif.GetGifHeight();
-//
-//                //使用自定义显示范围
+            {
+                DrawTextureAlpha dv=new DrawTextureAlpha();
+                dv.SetLayout(0, 0, 1, 1);
+                dv.SetDirection(QuadUV.Direction.Vert);
+
+                draw_object[0]=dv;
+            }
+
+            {
+                DrawGIF gif=new DrawGIF();
+
+                gif.Load("/sdcard/Pictures/Img00000285.GIF");
+
+                float gif_width=gif.GetGifWidth();
+                float gif_height=gif.GetGifHeight();
+
+                //使用自定义显示范围
 //                {
 //                    final float cus_w=0.4f;      //自定义显示范围宽度
 //                    final float cus_h=0.4f;      //自定义显示范围高度
@@ -230,22 +225,22 @@ public class DrawManager
 //                    gif_width*=cus_w;
 //                    gif_height*=cus_h;
 //                }
-//
-//                float scale=1.0f;
-//                float fw=gif_width/(float)screen_width;                   //求出以浮点比例为准的宽
-//                float fh=gif_height/(float)screen_height;                 //求出以浮点比例为准的高
-//
+
+                float scale=1.0f;
+                float fw=gif_width/(float)screen_width;                   //求出以浮点比例为准的宽
+                float fh=gif_height/(float)screen_height;                 //求出以浮点比例为准的高
+
 //                while(fw<0.5f&&fh<0.5f)     //小于一半，太小了，放大
 //                {
 //                    fw*=2.0f;
 //                    fh*=2.0f;
 //                }
-//
-//                gif.SetLayout((1.0f-fw)/2.0f,(1.0f-fh)/2.0f,fw,fh);           //距中
-//
-//                gif.start();
-//                draw_object[1] = gif;
-//            }
+
+                gif.SetLayout((1.0f-fw)/2.0f,(1.0f-fh)/2.0f,fw,fh);           //距中
+
+                gif.start();
+                draw_object[1] = gif;
+            }
         }
     }
 

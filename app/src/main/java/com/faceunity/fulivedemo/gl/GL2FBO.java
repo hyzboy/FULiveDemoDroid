@@ -30,17 +30,19 @@ public class GL2FBO extends GLClass
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texture[0]);
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
 
-        GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA4, width, height, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, null);
+        GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGB565, width, height, 0, GLES20.GL_RGB, GLES20.GL_UNSIGNED_BYTE, null);
         GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0,
                 GLES20.GL_TEXTURE_2D, texture[0], 0);
 
         //depth renderbuffer
-        GLES20.glGenRenderbuffers(1, depth_rb, 0);
-        GLES20.glBindRenderbuffer(GLES20.GL_RENDERBUFFER, depth_rb[0]);
-        GLES20.glRenderbufferStorage(GLES20.GL_RENDERBUFFER, GLES20.GL_DEPTH_COMPONENT16, width, height);
-        GLES20.glFramebufferRenderbuffer(GLES20.GL_FRAMEBUFFER, GLES20.GL_DEPTH_ATTACHMENT, GLES20.GL_RENDERBUFFER, depth_rb[0]);
+//        GLES20.glGenRenderbuffers(1, depth_rb, 0);
+//        GLES20.glBindRenderbuffer(GLES20.GL_RENDERBUFFER, depth_rb[0]);
+//        GLES20.glRenderbufferStorage(GLES20.GL_RENDERBUFFER, GLES20.GL_DEPTH_COMPONENT16, width, height);
+//        GLES20.glFramebufferRenderbuffer(GLES20.GL_FRAMEBUFFER, GLES20.GL_DEPTH_ATTACHMENT, GLES20.GL_RENDERBUFFER, depth_rb[0]);
 
         int status = GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER);
+
+        GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
 
         if(status != GLES20.GL_FRAMEBUFFER_COMPLETE) {
             Log.d("FBORenderer", "Framebuffer incomplete. Status: " + status);
