@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.faceunity.fulivedemo.R;
+import com.faceunity.fulivedemo.gl.GL2FBO;
 import com.faceunity.fulivedemo.utils.LimitFpsUtil;
 import com.faceunity.gles.ProgramLandmarks;
 import com.faceunity.gles.ProgramTexture2d;
@@ -203,10 +204,17 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
         }
 
         FUUpdate();
-        draw_manager.setFaceUnityTextureID(m2DTexId);
 
-        draw_manager.update();
-        draw_manager.onDrawBackground();
+        GL2FBO fbo= draw_manager.GetFBO();
+
+        fbo.Begin();
+            draw_manager.setFaceUnityTextureID(m2DTexId);
+            draw_manager.update();
+            draw_manager.onDrawBackground();
+        fbo.End();
+
+        int fbo_texture=fbo.GetTextureID();                       //获取纹理ID
+        mProgramTexture2d.drawFrame(fbo_texture,GlUtil.IDENTITY_MATRIX);
 
         //FUDrawFrame();                      //by hyz, FaceUnity draw
 

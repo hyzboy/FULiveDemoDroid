@@ -6,12 +6,12 @@ def appName = 'FULiveDemo'
 def renameApk = false
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion '30.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.faceunity.${appName}".toLowerCase()
-        minSdkVersion 29
-        targetSdkVersion 30
+        minSdkVersion 26
+        targetSdkVersion 28
         versionCode rootProject.ext.namaSdkVersionCode
         versionName rootProject.ext.namaSdkVersionName
         manifestPlaceholders = ['appName': appName]
