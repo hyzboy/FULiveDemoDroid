@@ -61,9 +61,9 @@ public class QuadUV extends GL2FloatBuffer
 
         for(int i=0;i<4;i++)
         {
-            FinalData[pos]=ComputeScale(origin[pos][0],scale_x,offset_x);
+            FinalData[pos]=ComputeScale(origin[i][0],scale_x,offset_x);
             ++pos;
-            FinalData[pos]=ComputeScale(origin[pos][1],scale_y,offset_y);
+            FinalData[pos]=ComputeScale(origin[i][1],scale_y,offset_y);
             ++pos;
         }
     }
