@@ -6,6 +6,8 @@ public class QuadUV extends GL2FloatBuffer
     {
         Horz,   //横屏
         Vert,   //坚屏
+        R180,   //转180度
+        R180V,  //坚屏转180度
         Custom, //自定义
     }
 
@@ -15,29 +17,20 @@ public class QuadUV extends GL2FloatBuffer
         0--1
      */
 
-    private float QuadUVData[] = {
-            0.0f, 1.0f,
-            1.0f, 1.0f,
-            0.0f, 0.0f,
-            1.0f, 0.0f};
+    private final float LB[]={0.0f,1.0f};
+    private final float RB[]={1.0f,1.0f};
+    private final float LT[]={0.0f,0.0f};
+    private final float RT[]={1.0f,0.0f};
 
-    private float QuadUVDataMirror[] = {
-            1.0f, 1.0f,
-            0.0f, 1.0f,
-            1.0f, 0.0f,
-            0.0f, 0.0f};
+    private final float R180UVData[][]=         {LT,RT,LB,RB};
+    private final float R180MirrorUVData[][]=   {RT,LT,RB,LB};
+    private final float R180UVDataV[][]=        {RT,RB,LT,LB};
+    private final float R180MirrorUVDataV[][]=  {LT,LB,RT,RB};
 
-    private float QuadUVDataV[] = {
-            0.0f, 0.0f,
-            0.0f, 1.0f,
-            1.0f, 0.0f,
-            1.0f, 1.0f,};
-
-    private float QuadUVDataMirrorV[] = {
-            0.0f, 1.0f,
-            0.0f, 0.0f,
-            1.0f, 1.0f,
-            1.0f, 0.0f};
+    private final float QuadUVData[][] =        {LB,RB,LT,RT};
+    private final float QuadUVDataMirror[][] =  {RB,LB,RT,LT};
+    private final float QuadUVDataV[][] =       {LT,LB,RT,RB};
+    private final float QuadUVDataMirrorV[][] = {LB,LT,RB,RT};
 
     private boolean mirror=false;
     private Direction direction=Direction.Horz;
@@ -50,10 +43,8 @@ public class QuadUV extends GL2FloatBuffer
     {
         mirror=m;
 
-        if(mirror)
-            init(QuadUVDataMirror);
-        else
-            init(QuadUVData);
+        ProcData();
+        init(FinalData);
     }
 
     private float ComputeScale(float op,float scale,float offset)
@@ -64,22 +55,20 @@ public class QuadUV extends GL2FloatBuffer
         return (0.5f+(op-0.5f)*nl)+(offset*gap);
     }
 
-    private void ScaleData(float[] origin)
+    private void ScaleData(float[][] origin)
     {
         int pos=0;
 
         for(int i=0;i<4;i++)
         {
-            FinalData[pos]=ComputeScale(origin[pos],scale_x,offset_x);
+            FinalData[pos]=ComputeScale(origin[pos][0],scale_x,offset_x);
             ++pos;
-            FinalData[pos]=ComputeScale(origin[pos],scale_y,offset_y);
+            FinalData[pos]=ComputeScale(origin[pos][1],scale_y,offset_y);
             ++pos;
         }
-
-        setData(FinalData);
     }
 
-    private void updateData()
+    private void ProcData()
     {
         if(direction==Direction.Horz)
         {
@@ -95,6 +84,26 @@ public class QuadUV extends GL2FloatBuffer
             else
                 ScaleData(QuadUVDataV);
         }
+        else if(direction==Direction.R180)
+        {
+            if(mirror)
+                ScaleData(R180MirrorUVData);
+            else
+                ScaleData(R180UVData);
+        }
+        else if(direction==Direction.R180V)
+        {
+            if(mirror)
+                ScaleData(R180MirrorUVDataV);
+            else
+                ScaleData(R180UVDataV);
+        }
+    }
+
+    private void updateData()
+    {
+        ProcData();
+        setData(FinalData);
     }
 
     public void setScale(float x,float y)
