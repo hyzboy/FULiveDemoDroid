@@ -15,7 +15,7 @@ public class DrawVideoLR extends DrawObject
 
     public DrawVideoLR(Context con)
     {
-        super(ObjectType.VideoAlphaLR,false);
+        super(ObjectType.VideoAlphaLR);
 
         player=new VideoPlayer(con);
         video_texture = new GL2VideoTexture(player);

@@ -8,18 +8,41 @@ public abstract class ShaderModule extends GLClass
     private final String TAG = "ShaderModule";
 
     private final String mVertexShader =
-                      "attribute vec4 aPosition;\n"
-                    + "attribute vec4 aTextureCoord;\n"
+                      "attribute vec2 aPosition;\n"
+                    + "attribute vec2 aTextureCoord;\n"
                     + "varying vec2 vTextureCoord;\n"
-                    + "void main() {\n"
-                    + "  gl_Position = aPosition;\n"
-                    + "  vTextureCoord = aTextureCoord.xy;\n"
+                    + "uniform int direction;\n"
+                    + "uniform int mirror;\n"
+                    + "void main()\n"
+                    + "{\n"
+                    + "  float x=aTextureCoord.x;\n"
+                    + "  float y=aTextureCoord.y;\n"
+                    + "\n"
+                    + "  if(direction==0)\n"
+                    + "  {\n"
+                    + "    x=aTextureCoord.x;\n"
+                    + "    y=aTextureCoord.y;\n"
+                    + "  }\n"
+                    + "  else\n"
+                    + "  {\n"
+                    + "    x=1.0f-aTextureCoord.y;\n"
+                    + "    y=1.0f-aTextureCoord.x;\n"
+                    + "  }\n"
+                    + "\n"
+                    + "  vTextureCoord = vec2(x,y);\n"
+                    + "\n"
+                    + "  if(mirror==1)\n"
+                    + "    gl_Position = vec4(-aPosition.x,aPosition.y,0.0f,1.0f);\n"
+                    + "  else\n"
+                    + "    gl_Position = vec4(aPosition,0.0f,1.0f);\n"
                     + "}\n";
 
     protected int mProgram = -1;
 
     public int maPositionHandle;
     public int maTexCoordHandle;
+    public int maDirectionHandle;
+    public int maMirrorHandle;
 
     public ShaderModule(String tag)
     {
@@ -98,6 +121,16 @@ public abstract class ShaderModule extends GLClass
             return (false);
         }
 
+        maDirectionHandle = GLES20.glGetUniformLocation(mProgram,"direction");
+        CheckGLError("glGetUniformLocation direction");
+        if(maDirectionHandle==-1)
+            return(false);
+
+        maMirrorHandle = GLES20.glGetUniformLocation(mProgram,"mirror");
+        CheckGLError("glGetUniformLocation mirror");
+        if(maMirrorHandle==-1)
+            return(false);
+
         return (true);
     }
 
@@ -112,5 +145,20 @@ public abstract class ShaderModule extends GLClass
 
     public void end() {
         GLES20.glUseProgram(0);
+    }
+
+    public enum Direction
+    {
+        Horz,   //横屏
+        Vert   //坚屏
+    }
+
+    public void SetDirection(Direction dir)
+    {
+        GLES20.glUniform1i(maDirectionHandle,dir==Direction.Horz?0:1);
+    }
+    public void SetMirror(boolean mirror)
+    {
+        GLES20.glUniform1i(maMirrorHandle,mirror?1:0);
     }
 }

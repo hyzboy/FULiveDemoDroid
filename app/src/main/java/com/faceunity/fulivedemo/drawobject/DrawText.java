@@ -36,7 +36,7 @@ public class DrawText extends DrawObject
 
     public DrawText()
     {
-        super(ObjectType.Text,false);
+        super(ObjectType.Text);
 
         text_paint.setAntiAlias(true);
         text_paint.setARGB(0xFF,0xFF,0xFF,0xFF);

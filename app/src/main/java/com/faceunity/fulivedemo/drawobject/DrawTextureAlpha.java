@@ -12,7 +12,7 @@ public class DrawTextureAlpha extends DrawObject
 
     public DrawTextureAlpha()
     {
-        super(DrawObject.ObjectType.TextureAlpha,true);
+        super(DrawObject.ObjectType.TextureAlpha);
     }
 
     @Override
@@ -34,6 +34,9 @@ public class DrawTextureAlpha extends DrawObject
         GLES20.glEnable(GLES20.GL_BLEND);
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA,GLES20.GL_ONE_MINUS_SRC_ALPHA);
         shader.begin();
+
+            shader.SetDirection(direction);
+            shader.SetMirror(mirror);
 
             GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
             GLES20.glEnable(GLES20.GL_TEXTURE_2D);

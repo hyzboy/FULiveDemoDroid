@@ -18,7 +18,7 @@ public class DrawVideoAlpha extends DrawObject
 
     public DrawVideoAlpha(Context con)
     {
-        super(ObjectType.Video,false);
+        super(ObjectType.Video);
 
         rgb_player =new VideoPlayer(con);
         rgb_texture = new GL2VideoTexture(rgb_player);

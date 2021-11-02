@@ -15,6 +15,7 @@ import com.faceunity.fulivedemo.drawobject.DrawTextureAlpha;
 import com.faceunity.fulivedemo.drawobject.DrawVideo;
 import com.faceunity.fulivedemo.gl.GL2FBO;
 import com.faceunity.fulivedemo.gl.QuadUV;
+import com.faceunity.fulivedemo.gl.ShaderModule;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -202,7 +203,9 @@ public class DrawManager
             {
                 DrawTextureAlpha dv=new DrawTextureAlpha();
                 dv.SetLayout(0, 0, 1, 1);
-                dv.SetDirection(QuadUV.Direction.Vert);
+                dv.SetDirection(ShaderModule.Direction.Vert);
+
+                //dv.SetMirror(true);     //设置它需要镜像
 
                 draw_object[0]=dv;
             }

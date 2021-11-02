@@ -20,7 +20,7 @@ public class DrawGIF extends DrawObject
 
     public DrawGIF()
     {
-        super(ObjectType.GIF,false);
+        super(ObjectType.GIF);
     }
 
     public boolean Load(String filename) throws IOException

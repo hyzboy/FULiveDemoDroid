@@ -20,7 +20,7 @@ public class DrawVideo extends DrawObject
 
     public DrawVideo(Context con)
     {
-        super(ObjectType.Video,false);
+        super(ObjectType.Video);
 
         player=new VideoPlayer(con);
         video_texture = new GL2VideoTexture(player);

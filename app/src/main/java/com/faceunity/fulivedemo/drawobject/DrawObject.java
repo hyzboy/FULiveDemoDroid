@@ -3,6 +3,7 @@ package com.faceunity.fulivedemo.drawobject;
 import com.faceunity.fulivedemo.gl.GLClass;
 import com.faceunity.fulivedemo.gl.QuadUV;
 import com.faceunity.fulivedemo.gl.RenderLayout;
+import com.faceunity.fulivedemo.gl.ShaderModule;
 
 /**
  * 绘制对象基类
@@ -22,15 +23,18 @@ public abstract class DrawObject extends GLClass
 
     private ObjectType type;
 
+    protected ShaderModule.Direction direction=ShaderModule.Direction.Horz;
+    protected boolean mirror=false;
+
     protected QuadUV texture_uv=null;
 
     protected RenderLayout render_layout=new RenderLayout();
 
-    public DrawObject(ObjectType ot,boolean mirror)
+    public DrawObject(ObjectType ot)
     {
         super("DrawObject:"+ot.name());
         type=ot;
-        texture_uv=new QuadUV(mirror);
+        texture_uv=new QuadUV();
         render_layout.init();
     }
 
@@ -47,11 +51,14 @@ public abstract class DrawObject extends GLClass
     public boolean isTextureAlpha(){return type==ObjectType.TextureAlpha;}
     public boolean isGIF(){return type==ObjectType.GIF;}
 
+    public void SetDirection(ShaderModule.Direction dir){direction=dir;}                            ///<设置屏幕方向
+    public void SetMirror(boolean mir){mirror=mir;}                                                 ///<是否镜像
+
     public void SetLayout(float l,float t,float w,float h)
     {
         render_layout.set(l,t,w,h);
     }
-    public void SetDirection(QuadUV.Direction dir){texture_uv.setDirection(dir);}
+    //public void SetDirection(QuadUV.Direction dir){texture_uv.setDirection(dir);}
     public void SetScale(float x,float y){texture_uv.setScale(x,y);}
     public void SetOffset(float x,float y){texture_uv.setOffset(x,y);}
 
