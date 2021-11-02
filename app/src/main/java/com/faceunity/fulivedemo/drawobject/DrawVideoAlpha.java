@@ -67,6 +67,9 @@ public class DrawVideoAlpha extends DrawObject
         shader.begin();
             rgb_texture.bind(0);
             alpha_texture.bind(1);
+            shader.SetDirection(direction);
+            shader.SetMirror(mirror);
+            shader.SetFlip(flip);
             shader.BindPosition(render_layout);
             shader.BindTexCoord(texture_uv);
 

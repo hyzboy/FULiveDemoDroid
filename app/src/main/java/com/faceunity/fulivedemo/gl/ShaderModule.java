@@ -13,29 +13,31 @@ public abstract class ShaderModule extends GLClass
                     + "varying vec2 vTextureCoord;\n"
                     + "uniform int direction;\n"
                     + "uniform int mirror;\n"
+                    + "uniform int flip;\n"
                     + "uniform mat4 projection_matrix;\n"
                     + "void main()\n"
                     + "{\n"
-                    + "  float x=aTextureCoord.x;\n"
-                    + "  float y=aTextureCoord.y;\n"
-                    + "\n"
-                    + "  if(direction==0)\n"
-                    + "  {\n"
-                    + "    x=aTextureCoord.x;\n"
-                    + "    y=aTextureCoord.y;\n"
-                    + "  }\n"
-                    + "  else\n"
-                    + "  {\n"
-                    + "    x=1.0-aTextureCoord.y;\n"
-                    + "    y=1.0-aTextureCoord.x;\n"
-                    + "  }\n"
-                    + "\n"
-                    + "  vTextureCoord = vec2(x,y);\n"
+                    + "  float x,y;\n"
+                    + "  vec2 tc;\n"
                     + "\n"
                     + "  if(mirror==1)\n"
-                    + "    gl_Position = projection_matrix*vec4(-aPosition.x,aPosition.y,0.0,1.0);\n"
+                    + "    x=1.0-aTextureCoord.x;\n"
                     + "  else\n"
-                    + "    gl_Position = projection_matrix*vec4(aPosition,0.0,1.0);\n"
+                    + "    x=aTextureCoord.x;\n"
+                    + "\n"
+                    + "  if(flip==1)\n"
+                    + "    y=1.0-aTextureCoord.y;\n"
+                    + "  else\n"
+                    + "    y=aTextureCoord.y;\n"
+                    + "\n"
+                    + "  if(direction==0)\n"
+                    + "    tc=vec2(x,y);\n"
+                    + "  else\n"
+                    + "    tc=vec2(y,1.0-x);\n"
+                    + "\n"
+                    + "  vTextureCoord = tc;\n"
+                    + "\n"
+                    + "  gl_Position = projection_matrix*vec4(aPosition,0.0,1.0);\n"
                     + "}\n";
 
     protected int mProgram = -1;
@@ -48,6 +50,7 @@ public abstract class ShaderModule extends GLClass
     private int maProjectionHandle;
     private int maDirectionHandle;
     private int maMirrorHandle;
+    private int maFlipHandle;
 
     public ShaderModule(String tag)
     {
@@ -148,6 +151,11 @@ public abstract class ShaderModule extends GLClass
         if(maMirrorHandle==-1)
             return(false);
 
+        maFlipHandle = GLES20.glGetUniformLocation(mProgram,"flip");
+        CheckGLError("glGetUniformLocation flip");
+        if(maFlipHandle==-1)
+            return(false);
+
         return (true);
     }
 
@@ -194,4 +202,5 @@ public abstract class ShaderModule extends GLClass
     {
         GLES20.glUniform1i(maMirrorHandle,mirror?1:0);
     }
+    public void SetFlip(boolean flip){GLES20.glUniform1i(maFlipHandle,flip?1:0);}
 }

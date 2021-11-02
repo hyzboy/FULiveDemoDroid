@@ -12,6 +12,7 @@ import com.faceunity.fulivedemo.drawobject.DrawGIF;
 import com.faceunity.fulivedemo.drawobject.DrawObject;
 import com.faceunity.fulivedemo.drawobject.DrawText;
 import com.faceunity.fulivedemo.drawobject.DrawTextureAlpha;
+import com.faceunity.fulivedemo.drawobject.DrawVideo;
 import com.faceunity.fulivedemo.gl.GL2FBO;
 import com.faceunity.fulivedemo.gl.ShaderModule;
 
@@ -160,26 +161,26 @@ public class DrawManager
 //            {
 //                DrawVideo dv = new DrawVideo(activity.getApplicationContext());
 //                dv.SetLayout(0, 0, 1, 1);
-//                //dv.SetDirection(QuadUV.Direction.Vert);
+//                dv.SetDirection(ShaderModule.Direction.Vert);
 //
 //                //假设影片为1920x1080
 //                //屏幕为1080x1920
 //                //则实际显示为，高度从1080被放大到了1920即1920/1080=1.777倍，而宽度被从1920缩小到了1080，同为1.777倍。所需做的是，将宽度放大1.777*1.777=3.16倍
 //
-//                final float movie_width=1920;         //影片宽
-//                final float movie_height=1080;        //影片高
-//
-//                //影片高放大倍数
-//                final float v_zoom_out=screen_height/movie_height;
-//                //影片宽缩小倍数
-//                final float h_zoom_in=movie_width/screen_width;
-//
-//                //最终影片宽所需放大倍数
-//                final float v_scale=h_zoom_in*v_zoom_out;
-//
-//                dv.SetScale(v_scale,1.0f);
-//
-//                dv.SetOffset(1.0f,0);       //设定偏移，-1为最左，+1为最右
+////                final float movie_width=1920;         //影片宽
+////                final float movie_height=1080;        //影片高
+////
+////                //影片高放大倍数
+////                final float v_zoom_out=screen_height/movie_height;
+////                //影片宽缩小倍数
+////                final float h_zoom_in=movie_width/screen_width;
+////
+////                //最终影片宽所需放大倍数
+////                final float v_scale=h_zoom_in*v_zoom_out;
+////
+////                dv.SetScale(v_scale,1.0f);
+////
+////                dv.SetOffset(1.0f,0);       //设定偏移，-1为最左，+1为最右
 //
 //                dv.init("/sdcard/Movies/We Are Crytek.mp4");
 //
@@ -200,10 +201,10 @@ public class DrawManager
                 dv.SetLayout(0, 0, 1, 1);
                 dv.SetDirection(ShaderModule.Direction.Vert);
 
-                //dv.SetMirror(true);     //设置它需要镜像
+                dv.SetFlip(true);     //设置它需要翻转
 
                 dv.SetSize(screen_width, screen_height,
-                           640,1920);  //假设摄像机画面如此，需修正
+                        screen_width, screen_height);  //假设摄像机画面如此，需修正
 
                 draw_object[0]=dv;
             }
