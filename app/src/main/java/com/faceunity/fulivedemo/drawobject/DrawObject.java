@@ -23,17 +23,21 @@ public abstract class DrawObject extends GLClass
 
     private ObjectType type;
 
+    protected ShaderModule shader=null;
     protected ShaderModule.Direction direction=ShaderModule.Direction.Horz;
     protected boolean mirror=false;
+
+    protected int vp_width=0,vp_height=0;
 
     protected QuadUV texture_uv=null;
 
     protected RenderLayout render_layout=new RenderLayout();
 
-    public DrawObject(ObjectType ot)
+    public DrawObject(ObjectType ot,ShaderModule sm)
     {
         super("DrawObject:"+ot.name());
         type=ot;
+        shader=sm;
         texture_uv=new QuadUV();
         render_layout.init();
     }
@@ -65,6 +69,14 @@ public abstract class DrawObject extends GLClass
     public void SetCustomViewScope(float l,float t,float w,float h)
     {
         texture_uv.setCustom(l,t,w,h);
+    }
+
+    public void SetViewport(int w,int h)
+    {
+        vp_width=w;
+        vp_height=h;
+
+        shader.SetViewport(w,h);
     }
 
     public abstract void start();

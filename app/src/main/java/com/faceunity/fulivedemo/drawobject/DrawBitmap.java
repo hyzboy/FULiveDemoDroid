@@ -11,11 +11,10 @@ import com.faceunity.fulivedemo.gl.GL2Texture;
 public class DrawBitmap extends DrawObject
 {
     private GL2Texture texture=new GL2Texture();
-    private ShaderAlpha shader=new ShaderAlpha();
 
     public DrawBitmap()
     {
-        super(ObjectType.Bitmap);
+        super(ObjectType.Bitmap,new ShaderAlpha());
 
         texture.init(GLES20.GL_TEXTURE_2D);
     }
@@ -38,8 +37,8 @@ public class DrawBitmap extends DrawObject
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA,GLES20.GL_ONE_MINUS_SRC_ALPHA);
         shader.begin();
             texture.bind(0);
-            render_layout.bind(shader.maPositionHandle);
-            texture_uv.bind(shader.maTexCoordHandle);
+            shader.BindPosition(render_layout);
+            shader.BindTexCoord(texture_uv);
 
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP,0,4);
         shader.end();

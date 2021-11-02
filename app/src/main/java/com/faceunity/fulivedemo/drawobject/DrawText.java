@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.opengl.GLES20;
 
 import com.faceunity.fulivedemo.gl.GL2Texture;
+import com.faceunity.fulivedemo.gl.ShaderModule;
 
 public class DrawText extends DrawObject
 {
@@ -17,7 +18,6 @@ public class DrawText extends DrawObject
     private Paint text_paint=new Paint();
 
     private GL2Texture texture=null;
-    private ShaderText shader=new ShaderText();
 
     private String text;
     private float size=0;
@@ -36,7 +36,7 @@ public class DrawText extends DrawObject
 
     public DrawText()
     {
-        super(ObjectType.Text);
+        super(ObjectType.Text,new ShaderText());
 
         text_paint.setAntiAlias(true);
         text_paint.setARGB(0xFF,0xFF,0xFF,0xFF);
@@ -125,9 +125,10 @@ public class DrawText extends DrawObject
         CheckGLError("glBlendFunc(SRC_ALPHA,ONE_MINUS_SRC_ALPHA)");
         shader.begin();
             texture.bind(0);
-            render_layout.bind(shader.maPositionHandle);
-            texture_uv.bind(shader.maTexCoordHandle);
-            shader.SetTextColor(color);
+            //shader.SetProjectionMatrix(ShaderModule.MatrixType.Ortho);
+            shader.BindPosition(render_layout);
+            shader.BindTexCoord(texture_uv);
+            ((ShaderText)shader).SetTextColor(color);
 
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP,0,4);
         shader.end();

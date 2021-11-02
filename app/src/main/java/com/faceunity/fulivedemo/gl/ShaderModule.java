@@ -3,6 +3,8 @@ package com.faceunity.fulivedemo.gl;
 import android.opengl.GLES20;
 import android.util.Log;
 
+import java.nio.FloatBuffer;
+
 public abstract class ShaderModule extends GLClass
 {
     private final String TAG = "ShaderModule";
@@ -13,6 +15,7 @@ public abstract class ShaderModule extends GLClass
                     + "varying vec2 vTextureCoord;\n"
                     + "uniform int direction;\n"
                     + "uniform int mirror;\n"
+//                    + "uniform mat4 projection_matrix;\n"
                     + "void main()\n"
                     + "{\n"
                     + "  float x=aTextureCoord.x;\n"
@@ -39,14 +42,28 @@ public abstract class ShaderModule extends GLClass
 
     protected int mProgram = -1;
 
-    public int maPositionHandle;
-    public int maTexCoordHandle;
-    public int maDirectionHandle;
-    public int maMirrorHandle;
+    private int maPositionHandle;
+    private int maTexCoordHandle;
+
+    private int vp_width,vp_height;
+//    private Matrix4f mat_ndc=new Matrix4f(),mat_ortho=new Matrix4f();
+
+//    private int maProjectionHandle;
+    private int maDirectionHandle;
+    private int maMirrorHandle;
 
     public ShaderModule(String tag)
     {
         super(tag);
+    }
+
+    public void SetViewport(int w,int h)
+    {
+        vp_width=w;
+        vp_height=h;
+
+//        mat_ndc.identity();
+//        mat_ortho.ortho(vp_width,vp_height);
     }
 
     private int loadShader(int shaderType, String source) {
@@ -121,6 +138,11 @@ public abstract class ShaderModule extends GLClass
             return (false);
         }
 
+//        maProjectionHandle = GLES20.glGetUniformLocation(mProgram,"projection_matrix");
+//        CheckGLError("glGetUniformLocation projection_matrix");
+//        if(maProjectionHandle==-1)
+//            return(false);
+
         maDirectionHandle = GLES20.glGetUniformLocation(mProgram,"direction");
         CheckGLError("glGetUniformLocation direction");
         if(maDirectionHandle==-1)
@@ -139,13 +161,47 @@ public abstract class ShaderModule extends GLClass
     public void begin()
     {
         ClearGLError();
+
+        GLES20.glDisable(GLES20.GL_CULL_FACE);
         GLES20.glUseProgram(mProgram);
         CheckGLError("after glUseProgram()");
+
+//        SetProjectionMatrix(MatrixType.NDC);
     }
 
     public void end() {
         GLES20.glUseProgram(0);
     }
+
+    public void BindPosition(GL2FloatBuffer vertices)
+    {
+        GLES20.glVertexAttribPointer(maPositionHandle, 2, GLES20.GL_FLOAT, false, 0, vertices.GetBuffer());
+        GLES20.glEnableVertexAttribArray(maPositionHandle);
+    }
+
+    public void BindTexCoord(GL2FloatBuffer vertices)
+    {
+        GLES20.glVertexAttribPointer(maTexCoordHandle, 2, GLES20.GL_FLOAT, false, 0, vertices.GetBuffer());
+        GLES20.glEnableVertexAttribArray(maTexCoordHandle);
+    }
+
+//    public enum MatrixType
+//    {
+//        NDC,
+//        Ortho
+//    }
+//
+//    public void SetProjectionMatrix(MatrixType type)
+//    {
+//        if(type==MatrixType.NDC)
+//        {
+//            GLES20.glUniformMatrix4fv(maProjectionHandle, 1, false, mat_ndc.GetData(), 0);
+//        }
+//        else
+//        {
+//            GLES20.glUniformMatrix4fv(maProjectionHandle, 1, false, mat_ortho.GetData(), 0);
+//        }
+//    }
 
     public enum Direction
     {

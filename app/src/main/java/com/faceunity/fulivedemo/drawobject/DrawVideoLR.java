@@ -11,11 +11,10 @@ public class DrawVideoLR extends DrawObject
 {
     private VideoPlayer player=null;
     private GL2VideoTexture video_texture=null;
-    private ShaderModule shader=new ShaderAlphaLRExternal();
 
     public DrawVideoLR(Context con)
     {
-        super(ObjectType.VideoAlphaLR);
+        super(ObjectType.VideoAlphaLR,new ShaderAlphaLRExternal());
 
         player=new VideoPlayer(con);
         video_texture = new GL2VideoTexture(player);
@@ -50,8 +49,8 @@ public class DrawVideoLR extends DrawObject
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA,GLES20.GL_ONE_MINUS_SRC_ALPHA);
         shader.begin();
             video_texture.bind(0);
-            render_layout.bind(shader.maPositionHandle);
-            texture_uv.bind(shader.maTexCoordHandle);
+            shader.BindPosition(render_layout);
+            shader.BindTexCoord(texture_uv);
 
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP,0,4);
         shader.end();

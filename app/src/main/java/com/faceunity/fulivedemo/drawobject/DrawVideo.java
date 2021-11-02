@@ -16,11 +16,10 @@ public class DrawVideo extends DrawObject
 {
     private VideoPlayer player=null;
     private GL2VideoTexture video_texture=null;
-    private ShaderModule shader=new ShaderOpaqueExternal();
 
     public DrawVideo(Context con)
     {
-        super(ObjectType.Video);
+        super(ObjectType.Video,new ShaderOpaqueExternal());
 
         player=new VideoPlayer(con);
         video_texture = new GL2VideoTexture(player);
@@ -54,8 +53,8 @@ public class DrawVideo extends DrawObject
         GLES20.glDisable(GLES20.GL_BLEND);
         shader.begin();
             video_texture.bind(0);
-            render_layout.bind(shader.maPositionHandle);
-            texture_uv.bind(shader.maTexCoordHandle);
+            shader.BindPosition(render_layout);
+            shader.BindTexCoord(texture_uv);
 
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP,0,4);
         shader.end();

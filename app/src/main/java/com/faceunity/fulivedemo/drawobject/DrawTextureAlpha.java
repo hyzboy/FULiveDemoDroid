@@ -8,11 +8,10 @@ import com.faceunity.fulivedemo.gl.ShaderModule;
 public class DrawTextureAlpha extends DrawObject
 {
     private int textureID=-1;
-    private ShaderModule shader=new ShaderAlpha();
 
     public DrawTextureAlpha()
     {
-        super(DrawObject.ObjectType.TextureAlpha);
+        super(DrawObject.ObjectType.TextureAlpha,new ShaderAlpha());
     }
 
     @Override
@@ -45,10 +44,10 @@ public class DrawTextureAlpha extends DrawObject
             GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
             GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
 
-        render_layout.bind(shader.maPositionHandle);
-        texture_uv.bind(shader.maTexCoordHandle);
+            shader.BindPosition(render_layout);
+            shader.BindTexCoord(texture_uv);
 
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP,0,4);
+            GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP,0,4);
         shader.end();
         GLES20.glDisable(GLES20.GL_BLEND);
     }

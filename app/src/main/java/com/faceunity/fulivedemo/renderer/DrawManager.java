@@ -83,9 +83,8 @@ public class DrawManager
 
         for(int i=0;i<BACKGROUND_OBJECT_COUNT;i++)
         {
-            if(draw_object[i]!=null){
+            if(draw_object[i]!=null)
                 draw_object[i].draw();
-            }
         }
     }
 
@@ -96,9 +95,8 @@ public class DrawManager
         for(int i=BACKGROUND_OBJECT_COUNT;
                 i<BACKGROUND_OBJECT_COUNT+FOREGROUND_OBJECT_COUNT;i++)
         {
-            if(draw_object[i]!=null){
+            if(draw_object[i]!=null)
                 draw_object[i].draw();
-            }
         }
 
         for(DrawText dt:draw_text_list)
@@ -245,6 +243,10 @@ public class DrawManager
                 draw_object[1] = gif;
             }
         }
+
+        for(int i=0;i<MAX_DRAW_OBJECT;i++)
+            if(draw_object[i]!=null)
+                draw_object[i].SetViewport(screen_width,screen_height);
     }
 
     public void setFaceUnityTextureID(int id)

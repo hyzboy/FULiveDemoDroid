@@ -16,11 +16,9 @@ public class DrawGIF extends DrawObject
     private GifTexImage2D gif_tex=null;
     private int last_frame=-1;
 
-    private ShaderAlpha shader=new ShaderAlpha();
-
     public DrawGIF()
     {
-        super(ObjectType.GIF);
+        super(ObjectType.GIF,new ShaderAlpha());
     }
 
     public boolean Load(String filename) throws IOException
@@ -47,10 +45,7 @@ public class DrawGIF extends DrawObject
     }
 
     @Override
-    public void update()
-    {
-
-    }
+    public void update(){}
 
     @Override
     public void draw()
@@ -66,8 +61,8 @@ public class DrawGIF extends DrawObject
                 gif_tex.glTexImage2D(GLES20.GL_TEXTURE_2D,0);
             }
 
-            render_layout.bind(shader.maPositionHandle);
-            texture_uv.bind(shader.maTexCoordHandle);
+            shader.BindPosition(render_layout);
+            shader.BindTexCoord(texture_uv);
 
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP,0,4);
         shader.end();

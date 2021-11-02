@@ -14,11 +14,10 @@ public class DrawVideoAlpha extends DrawObject
     private GL2VideoTexture rgb_texture =null;
     private VideoPlayer alpha_player =null;
     private GL2VideoTexture alpha_texture =null;
-    private ShaderModule shader=new ShaderAlphaExternal();
 
     public DrawVideoAlpha(Context con)
     {
-        super(ObjectType.Video);
+        super(ObjectType.Video,new ShaderAlphaExternal());
 
         rgb_player =new VideoPlayer(con);
         rgb_texture = new GL2VideoTexture(rgb_player);
@@ -68,8 +67,8 @@ public class DrawVideoAlpha extends DrawObject
         shader.begin();
             rgb_texture.bind(0);
             alpha_texture.bind(1);
-            render_layout.bind(shader.maPositionHandle);
-            texture_uv.bind(shader.maTexCoordHandle);
+            shader.BindPosition(render_layout);
+            shader.BindTexCoord(texture_uv);
 
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP,0,4);
         shader.end();
