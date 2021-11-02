@@ -27,8 +27,6 @@ public abstract class DrawObject extends GLClass
     protected ShaderModule.Direction direction=ShaderModule.Direction.Horz;
     protected boolean mirror=false;
 
-    protected int vp_width=0,vp_height=0;
-
     protected QuadUV texture_uv=null;
 
     protected RenderLayout render_layout=new RenderLayout();
@@ -71,12 +69,9 @@ public abstract class DrawObject extends GLClass
         texture_uv.setCustom(l,t,w,h);
     }
 
-    public void SetViewport(int w,int h)
+    public void SetSize(int w, int h, int cw, int ch)
     {
-        vp_width=w;
-        vp_height=h;
-
-        shader.SetViewport(w,h);
+        shader.SetSize(w, h, cw,ch);
     }
 
     public abstract void start();

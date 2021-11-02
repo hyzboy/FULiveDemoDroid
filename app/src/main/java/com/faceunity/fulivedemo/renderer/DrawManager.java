@@ -12,13 +12,10 @@ import com.faceunity.fulivedemo.drawobject.DrawGIF;
 import com.faceunity.fulivedemo.drawobject.DrawObject;
 import com.faceunity.fulivedemo.drawobject.DrawText;
 import com.faceunity.fulivedemo.drawobject.DrawTextureAlpha;
-import com.faceunity.fulivedemo.drawobject.DrawVideo;
 import com.faceunity.fulivedemo.gl.GL2FBO;
-import com.faceunity.fulivedemo.gl.QuadUV;
 import com.faceunity.fulivedemo.gl.ShaderModule;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
@@ -205,6 +202,9 @@ public class DrawManager
 
                 //dv.SetMirror(true);     //设置它需要镜像
 
+                dv.SetSize(screen_width, screen_height,
+                           640,1920);  //假设摄像机画面如此，需修正
+
                 draw_object[0]=dv;
             }
 
@@ -243,10 +243,6 @@ public class DrawManager
                 draw_object[1] = gif;
             }
         }
-
-        for(int i=0;i<MAX_DRAW_OBJECT;i++)
-            if(draw_object[i]!=null)
-                draw_object[i].SetViewport(screen_width,screen_height);
     }
 
     public void setFaceUnityTextureID(int id)

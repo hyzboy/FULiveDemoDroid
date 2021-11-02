@@ -3,8 +3,6 @@ package com.faceunity.fulivedemo.gl;
 import android.opengl.GLES20;
 import android.util.Log;
 
-import java.nio.FloatBuffer;
-
 public abstract class ShaderModule extends GLClass
 {
     private final String TAG = "ShaderModule";
@@ -45,8 +43,7 @@ public abstract class ShaderModule extends GLClass
     private int maPositionHandle;
     private int maTexCoordHandle;
 
-    private int vp_width,vp_height;
-    private Matrix4f mat_ndc=new Matrix4f(),mat_ortho=new Matrix4f();
+    private Matrix4f mat =new Matrix4f();
 
     private int maProjectionHandle;
     private int maDirectionHandle;
@@ -57,13 +54,11 @@ public abstract class ShaderModule extends GLClass
         super(tag);
     }
 
-    public void SetViewport(int w,int h)
+    public void SetSize(int w, int h, int cw, int ch)
     {
-        vp_width=w;
-        vp_height=h;
-
-        mat_ndc.identity();
-        mat_ortho.ortho(vp_width,vp_height);
+        mat.SetViewport(w, h);
+        mat.SetImageSize(cw, ch);
+        mat.identity();
     }
 
     private int loadShader(int shaderType, String source) {
@@ -166,7 +161,7 @@ public abstract class ShaderModule extends GLClass
         GLES20.glUseProgram(mProgram);
         CheckGLError("after glUseProgram()");
 
-        SetProjectionMatrix(MatrixType.NDC);
+        GLES20.glUniformMatrix4fv(maProjectionHandle, 1, false, mat.GetData(), 0);
     }
 
     public void end() {
@@ -183,24 +178,6 @@ public abstract class ShaderModule extends GLClass
     {
         GLES20.glVertexAttribPointer(maTexCoordHandle, 2, GLES20.GL_FLOAT, false, 0, vertices.GetBuffer());
         GLES20.glEnableVertexAttribArray(maTexCoordHandle);
-    }
-
-    public enum MatrixType
-    {
-        NDC,
-        Ortho
-    }
-
-    public void SetProjectionMatrix(MatrixType type)
-    {
-        if(type==MatrixType.NDC)
-        {
-            GLES20.glUniformMatrix4fv(maProjectionHandle, 1, false, mat_ndc.GetData(), 0);
-        }
-        else
-        {
-            GLES20.glUniformMatrix4fv(maProjectionHandle, 1, false, mat_ortho.GetData(), 0);
-        }
     }
 
     public enum Direction
