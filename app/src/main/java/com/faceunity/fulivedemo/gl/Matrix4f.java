@@ -19,12 +19,14 @@ public class Matrix4f
 
     public void identity()
     {
-        set(1.0f);
+        set(0.0f);
+
+        mat[0]=mat[5]=mat[10]=mat[15]=1.0f;
     }
 
     public void ortho(float w,float h)
     {
-        set(1.0f);
+        set(0.0f);
 
         mat[ 0]=2.0f/w;
         mat[ 5]=2.0f/h;
