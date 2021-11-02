@@ -26,16 +26,16 @@ public abstract class ShaderModule extends GLClass
                     + "  }\n"
                     + "  else\n"
                     + "  {\n"
-                    + "    x=1.0f-aTextureCoord.y;\n"
-                    + "    y=1.0f-aTextureCoord.x;\n"
+                    + "    x=1.0-aTextureCoord.y;\n"
+                    + "    y=1.0-aTextureCoord.x;\n"
                     + "  }\n"
                     + "\n"
                     + "  vTextureCoord = vec2(x,y);\n"
                     + "\n"
                     + "  if(mirror==1)\n"
-                    + "    gl_Position = projection_matrix*vec4(-aPosition.x,aPosition.y,0.0f,1.0f);\n"
+                    + "    gl_Position = projection_matrix*vec4(-aPosition.x,aPosition.y,0.0,1.0);\n"
                     + "  else\n"
-                    + "    gl_Position = projection_matrix*vec4(aPosition,0.0f,1.0f);\n"
+                    + "    gl_Position = projection_matrix*vec4(aPosition,0.0,1.0);\n"
                     + "}\n";
 
     protected int mProgram = -1;
