@@ -26,6 +26,7 @@ public abstract class DrawObject extends GLClass
     protected ShaderModule shader=null;
     protected ShaderModule.Direction direction=ShaderModule.Direction.Horz;
     protected boolean mirror=false;
+    protected boolean flip=false;
 
     protected QuadUV texture_uv=null;
 
@@ -55,6 +56,7 @@ public abstract class DrawObject extends GLClass
 
     public void SetDirection(ShaderModule.Direction dir){direction=dir;}                            ///<设置屏幕方向
     public void SetMirror(boolean mir){mirror=mir;}                                                 ///<是否镜像
+    public void SetFlip(boolean f){flip=f;}                                                         ///<是否翻转
 
     public void SetLayout(float l,float t,float w,float h)
     {

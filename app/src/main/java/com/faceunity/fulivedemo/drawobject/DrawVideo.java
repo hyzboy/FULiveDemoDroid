@@ -53,6 +53,9 @@ public class DrawVideo extends DrawObject
         GLES20.glDisable(GLES20.GL_BLEND);
         shader.begin();
             video_texture.bind(0);
+            shader.SetDirection(direction);
+            shader.SetMirror(mirror);
+            shader.SetFlip(flip);
             shader.BindPosition(render_layout);
             shader.BindTexCoord(texture_uv);
 

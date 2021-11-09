@@ -125,7 +125,6 @@ public class DrawText extends DrawObject
         CheckGLError("glBlendFunc(SRC_ALPHA,ONE_MINUS_SRC_ALPHA)");
         shader.begin();
             texture.bind(0);
-            //shader.SetProjectionMatrix(ShaderModule.MatrixType.Ortho);
             shader.BindPosition(render_layout);
             shader.BindTexCoord(texture_uv);
             ((ShaderText)shader).SetTextColor(color);

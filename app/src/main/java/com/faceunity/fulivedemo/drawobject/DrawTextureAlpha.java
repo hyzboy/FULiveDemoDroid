@@ -36,6 +36,7 @@ public class DrawTextureAlpha extends DrawObject
 
             shader.SetDirection(direction);
             shader.SetMirror(mirror);
+            shader.SetFlip(flip);
 
             GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
             GLES20.glEnable(GLES20.GL_TEXTURE_2D);

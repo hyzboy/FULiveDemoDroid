@@ -205,13 +205,13 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
 
         FUUpdate();
 
-        GL2FBO fbo= draw_manager.GetFBO();
+        //GL2FBO fbo= draw_manager.GetFBO();
 
-        fbo.Begin();
+        //fbo.Begin();
             draw_manager.setFaceUnityTextureID(m2DTexId);
             draw_manager.update();
             draw_manager.onDrawBackground();
-        fbo.End();
+        //fbo.End();
 
         fbo.GetNV21();
 

@@ -49,6 +49,9 @@ public class DrawVideoLR extends DrawObject
         GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA,GLES20.GL_ONE_MINUS_SRC_ALPHA);
         shader.begin();
             video_texture.bind(0);
+            shader.SetDirection(direction);
+            shader.SetMirror(mirror);
+            shader.SetFlip(flip);
             shader.BindPosition(render_layout);
             shader.BindTexCoord(texture_uv);
 

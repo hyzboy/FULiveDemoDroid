@@ -38,8 +38,6 @@ public class Matrix4f
     {
         set(0.0f);
 
-        float scale=1.0f;
-
         if(width!=0.0f||height!=0.0f)
         {
             float vp_rate = vp_w / vp_h;
@@ -51,7 +49,8 @@ public class Matrix4f
                 //而摄像机为16:9，则rate=1.77
                 //这种情况需要将画面等比放大2.33/1.77倍之后，上下空出一定范围
 
-                scale = vp_rate / rate;
+                mat[0]=1.0f;
+                mat[5]=vp_rate / rate;
             }
             else
             {
@@ -59,11 +58,15 @@ public class Matrix4f
                 //而摄像机为16:9 则rate=1.77
                 //这种情况需将画面等比放大1.77/1.6倍之后，左右空出一定范围
 
-                scale = rate/vp_rate;        //10/9=1.11
+                mat[0]=rate/vp_rate;        //10/9=1.11
+                mat[5]=1.0f;
             }
         }
+        else
+        {
+            mat[0]=mat[5]=1.0f;
+        }
 
-        mat[0]=mat[5]=scale;
         mat[10]=mat[15]=1.0f;
     }
 
