@@ -16,6 +16,7 @@ import com.faceunity.fulivedemo.gl.GL2FBO;
 import com.faceunity.fulivedemo.gl.ShaderModule;
 
 import java.io.IOException;
+import java.nio.Buffer;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;

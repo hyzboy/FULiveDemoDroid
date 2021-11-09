@@ -3,6 +3,9 @@ package com.faceunity.fulivedemo.gl;
 import android.opengl.GLES20;
 import android.util.Log;
 
+import com.android.glutil.YUV;
+
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 public class GL2FBO extends GLClass
@@ -11,6 +14,9 @@ public class GL2FBO extends GLClass
     private int fbo[]={-1};
     private int texture[]={-1};
     private int depth_rb[]={-1};
+
+    private GLPBO pbo=null;
+    private byte[] nv21_data=null;
 
     public GL2FBO()
     {
@@ -44,6 +50,15 @@ public class GL2FBO extends GLClass
 
         GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
 
+        {
+            pbo = new GLPBO("pbo_fbo", width, height);
+
+            int y_bytes = width * height;
+            int vu_bytes = y_bytes / 2;
+
+            nv21_data = new byte[y_bytes + vu_bytes];
+        }
+
         if(status != GLES20.GL_FRAMEBUFFER_COMPLETE) {
             Log.d("FBORenderer", "Framebuffer incomplete. Status: " + status);
 
@@ -68,12 +83,20 @@ public class GL2FBO extends GLClass
     public int GetWidth(){return width;}
     public int GetHeight(){return height;}
 
-    public void getScreenshot(ByteBuffer buf)
+    public byte[] GetNV21()
     {
-        buf.clear();
-
         Begin();
-        GLES20.glReadPixels(0,0,width,height,GLES20.GL_RGBA,GLES20.GL_UNSIGNED_BYTE,buf);
+        ByteBuffer buf=pbo.Begin();
+
+        if(buf!=null&&buf.hasArray())
+        {
+            byte[] rgba=(byte[])buf.array();
+
+            YUV.argb2nv21(nv21_data, rgba, width, height);
+        }
+
+        pbo.End();
         End();
+        return nv21_data;
     }
 }

@@ -370,7 +370,7 @@ public abstract class FUBaseActivity extends AppCompatActivity
         PermissionUtil.checkPermission(this);
         loadInternalConfigJson();
         mGlSurfaceView = (GLSurfaceView) findViewById(R.id.fu_base_gl_surface);
-        mGlSurfaceView.setEGLContextClientVersion(2);
+        mGlSurfaceView.setEGLContextClientVersion(3);
         mCameraRenderer = new Camera1Renderer(this, mGlSurfaceView, this);
         mFrontCameraOrientation = CameraUtils.getCameraOrientation(Camera.CameraInfo.CAMERA_FACING_FRONT);
         mFURenderer = initFURenderer();

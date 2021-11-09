@@ -213,6 +213,8 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
             draw_manager.onDrawBackground();
         fbo.End();
 
+        fbo.GetNV21();
+
         int fbo_texture=fbo.GetTextureID();                       //获取纹理ID
         mProgramTexture2d.drawFrame(fbo_texture,GlUtil.IDENTITY_MATRIX);
 
