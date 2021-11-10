@@ -1,7 +1,7 @@
 #include <jni.h>
 #include <libyuv.h>
 
-JNIEXPORT void JNICALL Java_com_android_glutil_YUV_argb2nv21(JNIEnv* env, jobject obj,jbyteArray nv21,jobject argb,jint width,jint height)
+extern "C" JNIEXPORT void JNICALL Java_com_android_glutil_YUV_abgr2nv21(JNIEnv* env, jobject obj,jbyteArray nv21,jobject argb,jint width,jint height)
 {
     jboolean is_copy = false;
 

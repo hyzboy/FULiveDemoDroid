@@ -89,7 +89,7 @@ public class GL2FBO extends GLClass
 
         if(buf!=null)
         {
-            YUV.argb2nv21(nv21_data, buf, width, height);
+            YUV.abgr2nv21(nv21_data, buf, width, height);
 
             pbo.End();
             End();

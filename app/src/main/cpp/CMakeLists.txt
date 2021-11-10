@@ -10,6 +10,9 @@ cmake_minimum_required(VERSION 3.18.0)
 
 project(YUV)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fno-rtti -fno-exceptions -Wall")
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libyuv/include)
 
 SET(LIBYUV_PATH ${CMAKE_CURRENT_SOURCE_DIR}/libyuv/source)
