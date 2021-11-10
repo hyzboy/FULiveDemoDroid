@@ -19,10 +19,16 @@ public class GLClass
 
     protected void CheckGLError(String op)
     {
-        int error;
-        while ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR)
+        int error = GLES20.glGetError();
+
+        if(error != GLES20.GL_NO_ERROR)
         {
-            Log.e(TAG, op + ": glError " + error);
+            if(error==GLES20.GL_INVALID_ENUM        )Log.e(TAG,op+": GL_INVALID_ENUM");else
+            if(error==GLES20.GL_INVALID_VALUE       )Log.e(TAG,op+": GL_INVALID_VALUE");else
+            if(error==GLES20.GL_INVALID_OPERATION   )Log.e(TAG,op+": GL_INVALID_OPERATION");else
+            if(error==GLES20.GL_OUT_OF_MEMORY       )Log.e(TAG,op+": GL_OUT_OF_MEMORY");else
+                Log.e(TAG, op + ": glError " + error);
+
             throw new RuntimeException(op + ": glError " + error);
         }
     }

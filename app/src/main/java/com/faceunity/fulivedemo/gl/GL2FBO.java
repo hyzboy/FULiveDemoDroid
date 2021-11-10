@@ -6,7 +6,6 @@ import android.util.Log;
 import com.android.glutil.YUV;
 
 import java.nio.Buffer;
-import java.nio.ByteBuffer;
 
 public class GL2FBO extends GLClass
 {
@@ -86,17 +85,21 @@ public class GL2FBO extends GLClass
     public byte[] GetNV21()
     {
         Begin();
-        ByteBuffer buf=pbo.Begin();
+        Buffer buf=pbo.Begin();
 
-        if(buf!=null&&buf.hasArray())
+        if(buf!=null)
         {
-            byte[] rgba=(byte[])buf.array();
+            YUV.argb2nv21(nv21_data, buf, width, height);
 
-            YUV.argb2nv21(nv21_data, rgba, width, height);
+            pbo.End();
+            End();
+            return nv21_data;
         }
-
-        pbo.End();
-        End();
-        return nv21_data;
+        else
+        {
+            pbo.End();
+            End();
+            return null;
+        }
     }
 }
