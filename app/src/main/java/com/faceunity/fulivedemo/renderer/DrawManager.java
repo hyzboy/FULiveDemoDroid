@@ -251,8 +251,8 @@ public class DrawManager
 
     public void setFaceUnityTextureID(int id)
     {
-        if(draw_object[0].isTextureAlpha())
-            ((DrawTextureAlpha)draw_object[0]).setTextureID(id);
+        if(draw_object[0].isActor())
+            ((DrawActor)draw_object[0]).setTextureID(id);
     }
 
     public void onSurfaceCreated(Activity act,GL10 gl, EGLConfig config)
