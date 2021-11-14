@@ -7,6 +7,7 @@ import android.opengl.GLES20;
 import com.faceunity.fulivedemo.async.GL2Event;
 import com.faceunity.fulivedemo.async.GL2EventSetBitmap;
 import com.faceunity.fulivedemo.async.GL2EventSetLayout;
+import com.faceunity.fulivedemo.drawobject.DrawActor;
 import com.faceunity.fulivedemo.drawobject.DrawBitmap;
 import com.faceunity.fulivedemo.drawobject.DrawGIF;
 import com.faceunity.fulivedemo.drawobject.DrawObject;
@@ -197,8 +198,9 @@ public class DrawManager
 //                draw_object[1] = dv;
 //            }
 
+            //绘制人物
             {
-                DrawTextureAlpha dv=new DrawTextureAlpha();
+                DrawActor dv=new DrawActor();
                 dv.SetLayout(0, 0, 1, 1);
                 dv.SetDirection(ShaderModule.Direction.Vert);
 

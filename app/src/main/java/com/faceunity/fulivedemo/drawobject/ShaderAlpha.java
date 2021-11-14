@@ -29,7 +29,7 @@ public class ShaderAlpha extends ShaderModule {
 
     public ShaderAlpha()
     {
-        super("ShaderOpaque");
+        super("ShaderAlpha");
         init();
     }
 

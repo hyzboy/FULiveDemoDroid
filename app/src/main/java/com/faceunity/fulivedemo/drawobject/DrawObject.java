@@ -17,7 +17,8 @@ public abstract class DrawObject extends GLClass
         VideoAlpha,
         VideoAlphaLR,
         Text,
-        TextureAlpha,       //用于画FU人物
+        TextureAlpha,
+        Actor,
         GIF,
     };
 
@@ -53,6 +54,7 @@ public abstract class DrawObject extends GLClass
     public boolean isText(){return type==ObjectType.Text;}
     public boolean isTextureAlpha(){return type==ObjectType.TextureAlpha;}
     public boolean isGIF(){return type==ObjectType.GIF;}
+    public boolean isActor(){return type==ObjectType.Actor;}
 
     public void SetDirection(ShaderModule.Direction dir){direction=dir;}                            ///<设置屏幕方向
     public void SetMirror(boolean mir){mirror=mir;}                                                 ///<是否镜像
