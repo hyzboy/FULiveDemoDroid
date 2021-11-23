@@ -144,6 +144,7 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
 
         try
         {
+            draw_manager.setCamera(mCameraWidth,mCameraHeight,mCameraOrientation);
             draw_manager.onSurfaceChanged(gl,width,height);     //by hyz
         } catch (IOException e)
         {
@@ -436,7 +437,9 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
     protected void initCameraInfo() {
     }
 
-    protected void openCamera(int cameraFacing) {
+    protected void openCamera(int cameraFacing)
+    {
+        draw_manager.setCamera(mCameraWidth,mCameraHeight,mCameraOrientation);
     }
 
     protected void startPreview() {

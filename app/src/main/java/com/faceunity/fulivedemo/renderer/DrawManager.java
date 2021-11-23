@@ -13,12 +13,10 @@ import com.faceunity.fulivedemo.drawobject.DrawGIF;
 import com.faceunity.fulivedemo.drawobject.DrawObject;
 import com.faceunity.fulivedemo.drawobject.DrawText;
 import com.faceunity.fulivedemo.drawobject.DrawTextureAlpha;
-import com.faceunity.fulivedemo.drawobject.DrawVideo;
 import com.faceunity.fulivedemo.gl.GL2FBO;
 import com.faceunity.fulivedemo.gl.ShaderModule;
 
 import java.io.IOException;
-import java.nio.Buffer;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
@@ -30,8 +28,8 @@ public class DrawManager
 {
     private GL2FBO fbo=null;
 
-    private final int MAX_SCREEN_WIDTH  =720;   //最大屏幕宽度
-    private final int SCREEN_SIZE_ALIGN =16;    //宽高对齐象素
+    private final int MAX_FBO_WIDTH =720;   //录像屏幕最大宽度
+    private final int FBO_SIZE_ALIGN =16;    //宽高对齐象素
 
     private final int FOREGROUND_OBJECT_COUNT=2;
     private final int BACKGROUND_OBJECT_COUNT=2;
@@ -39,6 +37,7 @@ public class DrawManager
 
     private Activity activity;
     private int screen_width,screen_height;
+    private int camera_width,camera_height;
     private DrawObject draw_object[]={null,null,null,null};
     private Queue<GL2Event> event_queue=new LinkedList<GL2Event>();
     private Vector<DrawText> draw_text_list=new Vector<DrawText>();
@@ -73,6 +72,30 @@ public class DrawManager
     }
 
     public GL2FBO GetFBO(){return fbo;}
+
+    public void setCamera(int w,int h,int ori)
+    {
+        if(ori==90||ori==270)
+        {
+            camera_width=h;
+            camera_height=w;
+        }
+        else
+        {
+            camera_width = w;
+            camera_height = h;
+        }
+
+        if(fbo==null)return;
+
+        for(DrawObject obj:draw_object)
+        {
+            if(obj!=null)
+                if(obj.isActor())
+                    obj.SetSize(fbo.GetWidth(),fbo.GetHeight(),
+                            camera_width,camera_height);
+        }
+    }
 
     public void onDrawBackground()
     {
@@ -110,7 +133,7 @@ public class DrawManager
 
     private int GetAlign(int value)
     {
-        return ((value+ SCREEN_SIZE_ALIGN -1)/ SCREEN_SIZE_ALIGN)* SCREEN_SIZE_ALIGN;
+        return ((value+ FBO_SIZE_ALIGN -1)/ FBO_SIZE_ALIGN)* FBO_SIZE_ALIGN;
     }
 
     public void onSurfaceChanged(GL10 gl, int width, int height) throws IOException
@@ -121,11 +144,11 @@ public class DrawManager
         int fbo_width;
         int fbo_height;
 
-        if(screen_width>MAX_SCREEN_WIDTH)
+        if(screen_width> MAX_FBO_WIDTH)
         {
-            fbo_width=MAX_SCREEN_WIDTH;
+            fbo_width= MAX_FBO_WIDTH;
 
-            double tmp=MAX_SCREEN_WIDTH;
+            double tmp= MAX_FBO_WIDTH;
             tmp/=(double)screen_width;
             tmp*=(double)screen_height;
 
@@ -201,13 +224,14 @@ public class DrawManager
             //绘制人物
             {
                 DrawActor dv=new DrawActor();
+//                DrawTextureAlpha dv=new DrawTextureAlpha();
                 dv.SetLayout(0, 0, 1, 1);
                 dv.SetDirection(ShaderModule.Direction.Vert);
 
                 dv.SetFlip(true);     //设置它需要翻转
 
-                dv.SetSize(screen_width, screen_height,
-                        screen_width, screen_height);  //假设摄像机画面如此，需修正
+                dv.SetSize(fbo_width, fbo_height,
+                        camera_width, camera_height);
 
                 draw_object[0]=dv;
             }
@@ -253,6 +277,8 @@ public class DrawManager
     {
         if(draw_object[0].isActor())
             ((DrawActor)draw_object[0]).setTextureID(id);
+//        if(draw_object[0].isTextureAlpha())
+//            ((DrawTextureAlpha)draw_object[0]).setTextureID(id);
     }
 
     public void onSurfaceCreated(Activity act,GL10 gl, EGLConfig config)

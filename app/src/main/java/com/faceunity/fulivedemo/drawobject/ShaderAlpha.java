@@ -6,7 +6,7 @@ import com.faceunity.fulivedemo.gl.ShaderModule;
 
 public class ShaderAlpha extends ShaderModule {
 
-    private final String mFragmentShaderOpaque =
+    private final String mFragmentShaderTextureAlpha =
                       "precision highp float;\n"
                     + "varying vec2 vTextureCoord;\n"
                     + "uniform sampler2D sTexture;\n"
@@ -18,7 +18,7 @@ public class ShaderAlpha extends ShaderModule {
 
     @Override
     public boolean init() {
-        if (!super.init(mFragmentShaderOpaque)) {
+        if (!super.init(mFragmentShaderTextureAlpha)) {
             return (false);
         }
 
