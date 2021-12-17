@@ -1,44 +1,20 @@
 package com.faceunity.fulivedemo.gl;
 
+import android.content.Context;
 import android.opengl.GLES20;
 import android.util.Log;
+
+import com.faceunity.utils.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 public abstract class ShaderModule extends GLClass
 {
     private final String TAG = "ShaderModule";
 
-    private final String mVertexShader =
-                      "attribute vec2 aPosition;\n"
-                    + "attribute vec2 aTextureCoord;\n"
-                    + "varying vec2 vTextureCoord;\n"
-                    + "uniform int direction;\n"
-                    + "uniform int mirror;\n"
-                    + "uniform int flip;\n"
-                    + "uniform mat4 projection_matrix;\n"
-                    + "void main()\n"
-                    + "{\n"
-                    + "  float x,y;\n"
-                    + "  vec2 tc;\n"
-                    + "\n"
-                    + "  if(mirror==1)\n"
-                    + "    x=1.0-aTextureCoord.x;\n"
-                    + "  else\n"
-                    + "    x=aTextureCoord.x;\n"
-                    + "\n"
-                    + "  if(flip==1)\n"
-                    + "    y=1.0-aTextureCoord.y;\n"
-                    + "  else\n"
-                    + "    y=aTextureCoord.y;\n"
-                    + "\n"
-                    + "  if(direction==0)\n"
-                    + "    tc=vec2(x,y);\n"
-                    + "  else\n"
-                    + "    tc=vec2(y,1.0-x);\n"
-                    + "\n"
-                    + "  vTextureCoord = tc;\n"
-                    + "\n"
-                    + "  gl_Position = projection_matrix*vec4(aPosition,0.0,1.0);\n"
-                    + "}\n";
+    private static Context context=null;
+    private static String mVertexShader="";
 
     protected int mProgram = -1;
 
@@ -51,6 +27,25 @@ public abstract class ShaderModule extends GLClass
     private int maDirectionHandle;
     private int maMirrorHandle;
     private int maFlipHandle;
+
+    private static String LoadShader(String filename)
+    {
+        try
+        {
+            return FileUtils.readStringFromAssetsFile(context, "shader"+File.separator+filename+".glsl");
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static void SetContext(Context c)
+    {
+        context=c;
+
+        mVertexShader=LoadShader("Vertex" );
+    }
 
     public ShaderModule(String tag)
     {
@@ -120,8 +115,15 @@ public abstract class ShaderModule extends GLClass
         return program;
     }
 
-    public boolean init(String mFragmentShader) {
+    public boolean init(String fragment_shader_filename)
+    {
+        String mFragmentShader=LoadShader(fragment_shader_filename);
+
+        if(mFragmentShader.length()<6)
+            return(false);
+
         mProgram = createProgram(mVertexShader, mFragmentShader);
+
         if (mProgram == 0) return (false);
 
         maPositionHandle = GLES20.glGetAttribLocation(mProgram, "aPosition");

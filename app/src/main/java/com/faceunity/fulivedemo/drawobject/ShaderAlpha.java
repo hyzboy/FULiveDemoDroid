@@ -4,21 +4,13 @@ import android.opengl.GLES20;
 
 import com.faceunity.fulivedemo.gl.ShaderModule;
 
-public class ShaderAlpha extends ShaderModule {
-
-    private final String mFragmentShaderTextureAlpha =
-                      "precision highp float;\n"
-                    + "varying vec2 vTextureCoord;\n"
-                    + "uniform sampler2D sTexture;\n"
-                    + "void main() {\n"
-                    + "  gl_FragColor = texture2D(sTexture, vTextureCoord);\n"
-                    + "}\n";
-
+public class ShaderAlpha extends ShaderModule
+{
     private int texture_location=-1;
 
     @Override
     public boolean init() {
-        if (!super.init(mFragmentShaderTextureAlpha)) {
+        if (!super.init("TextureAlpha")) {
             return (false);
         }
 

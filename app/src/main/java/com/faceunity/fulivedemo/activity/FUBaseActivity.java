@@ -41,6 +41,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.faceunity.FURenderer;
 import com.faceunity.fulivedemo.R;
+import com.faceunity.fulivedemo.gl.ShaderModule;
 import com.faceunity.fulivedemo.renderer.BaseCameraRenderer;
 import com.faceunity.fulivedemo.renderer.Camera1Renderer;
 import com.faceunity.fulivedemo.renderer.OnRendererStatusListener;
@@ -364,6 +365,7 @@ public abstract class FUBaseActivity extends AppCompatActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ShaderModule.SetContext(this.getBaseContext());
         ScreenUtils.fullScreen(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_fu_base);

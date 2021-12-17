@@ -4,21 +4,13 @@ import android.opengl.GLES20;
 
 import com.faceunity.fulivedemo.gl.ShaderModule;
 
-public class ShaderOpaque extends ShaderModule {
-
-    private final String mFragmentShaderOpaque =
-                      "precision highp float;\n"
-                    + "varying vec2 vTextureCoord;\n"
-                    + "uniform sampler2D sTexture;\n"
-                    + "void main() {\n"
-                    + "  gl_FragColor = vec4(texture2D(sTexture, vTextureCoord).rgb,1.0);\n"
-                    + "}\n";
-
+public class ShaderOpaque extends ShaderModule
+{
     private int texture_location=-1;
 
     @Override
     public boolean init() {
-        if (!super.init(mFragmentShaderOpaque)) {
+        if (!super.init("Opaque")) {
             return (false);
         }
 
