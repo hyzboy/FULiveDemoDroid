@@ -26,10 +26,10 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class DrawManager
 {
-    private GL2FBO fbo=null;
-
-    private final int MAX_FBO_WIDTH =720;   //录像屏幕最大宽度
-    private final int FBO_SIZE_ALIGN =16;    //宽高对齐象素
+//    private GL2FBO fbo=null;
+//
+//    private final int MAX_FBO_WIDTH =720;   //录像屏幕最大宽度
+//    private final int FBO_SIZE_ALIGN =16;    //宽高对齐象素
 
     private final int FOREGROUND_OBJECT_COUNT=2;
     private final int BACKGROUND_OBJECT_COUNT=2;
@@ -71,7 +71,7 @@ public class DrawManager
         }
     }
 
-    public GL2FBO GetFBO(){return fbo;}
+//    public GL2FBO GetFBO(){return fbo;}
 
     public void setCamera(int w,int h,int ori)
     {
@@ -86,15 +86,26 @@ public class DrawManager
             camera_height = h;
         }
 
-        if(fbo==null)return;
-
-        for(DrawObject obj:draw_object)
+//        if(fbo==null)
         {
-            if(obj!=null)
-                if(obj.isActor())
-                    obj.SetSize(fbo.GetWidth(),fbo.GetHeight(),
-                            camera_width,camera_height);
+            for (DrawObject obj : draw_object)
+            {
+                if (obj != null)
+                    if (obj.isActor())
+                        obj.SetSize(screen_width,screen_height,
+                                    camera_width,camera_height);
+            }
         }
+//        else
+//        {
+//            for (DrawObject obj : draw_object)
+//            {
+//                if (obj != null)
+//                    if (obj.isActor())
+//                        obj.SetSize(fbo.GetWidth(), fbo.GetHeight(),
+//                                    camera_width, camera_height);
+//            }
+//        }
     }
 
     public void onDrawBackground()
@@ -126,42 +137,42 @@ public class DrawManager
             dt.draw();
     }
 
-    public int GetTextureID()
-    {
-        return fbo.GetTextureID();
-    }
-
-    private int GetAlign(int value)
-    {
-        return ((value+ FBO_SIZE_ALIGN -1)/ FBO_SIZE_ALIGN)* FBO_SIZE_ALIGN;
-    }
+//    public int GetTextureID()
+//    {
+//        return fbo.GetTextureID();
+//    }
+//
+//    private int GetAlign(int value)
+//    {
+//        return ((value+ FBO_SIZE_ALIGN -1)/ FBO_SIZE_ALIGN)* FBO_SIZE_ALIGN;
+//    }
 
     public void onSurfaceChanged(GL10 gl, int width, int height) throws IOException
     {
         screen_width=width;
         screen_height=height;
 
-        int fbo_width;
-        int fbo_height;
-
-        if(screen_width> MAX_FBO_WIDTH)
-        {
-            fbo_width= MAX_FBO_WIDTH;
-
-            double tmp= MAX_FBO_WIDTH;
-            tmp/=(double)screen_width;
-            tmp*=(double)screen_height;
-
-            fbo_height=GetAlign((int)tmp);
-        }
-        else
-        {
-            fbo_width=GetAlign(screen_width);
-            fbo_height=GetAlign(screen_height);
-        }
-
-        fbo=new GL2FBO();
-        fbo.init(fbo_width,fbo_height);
+//        int fbo_width;
+//        int fbo_height;
+//
+//        if(screen_width> MAX_FBO_WIDTH)
+//        {
+//            fbo_width= MAX_FBO_WIDTH;
+//
+//            double tmp= MAX_FBO_WIDTH;
+//            tmp/=(double)screen_width;
+//            tmp*=(double)screen_height;
+//
+//            fbo_height=GetAlign((int)tmp);
+//        }
+//        else
+//        {
+//            fbo_width=GetAlign(screen_width);
+//            fbo_height=GetAlign(screen_height);
+//        }
+//
+//        fbo=new GL2FBO();
+//        fbo.init(fbo_width,fbo_height);
 
         //创建文字绘制测试对象
         if(draw_text_list.size()<=0)
@@ -230,8 +241,16 @@ public class DrawManager
 
                 dv.SetFlip(true);     //设置它需要翻转
 
-                dv.SetSize(fbo_width, fbo_height,
-                        camera_width, camera_height);
+//                if(fbo==null)
+                {
+                    dv.SetSize(screen_width, screen_height,
+                               camera_width, camera_height);
+                }
+//                else
+//                {
+//                    dv.SetSize(fbo_width, fbo_height,
+//                               camera_width, camera_height);
+//                }
 
                 draw_object[0]=dv;
             }

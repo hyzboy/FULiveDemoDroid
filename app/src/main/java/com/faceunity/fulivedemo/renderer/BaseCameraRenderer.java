@@ -206,18 +206,18 @@ public class BaseCameraRenderer implements GLSurfaceView.Renderer {
 
         FUUpdate();
 
-        GL2FBO fbo= draw_manager.GetFBO();
+//        GL2FBO fbo= draw_manager.GetFBO();
 
-        fbo.Begin();
+//        fbo.Begin();
             draw_manager.setFaceUnityTextureID(m2DTexId);
             draw_manager.update();
             draw_manager.onDrawBackground();
-        fbo.End();
-
-        fbo.GetNV21();
-
-        int fbo_texture=fbo.GetTextureID();                       //获取纹理ID
-        mProgramTexture2d.drawFrame(fbo_texture,GlUtil.IDENTITY_MATRIX);
+//        fbo.End();
+//
+//        fbo.GetNV21();
+//
+//        int fbo_texture=fbo.GetTextureID();                       //获取纹理ID
+//        mProgramTexture2d.drawFrame(fbo_texture,GlUtil.IDENTITY_MATRIX);
 
         //FUDrawFrame();                      //by hyz, FaceUnity draw
 
