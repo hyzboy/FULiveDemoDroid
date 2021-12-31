@@ -2,6 +2,14 @@ precision highp float;
 varying vec2 vTextureCoord;
 uniform sampler2D sTexture;
 
+uniform float ChromaColor;          //-135.0
+uniform float ChromaScope;          //45
+uniform vec2  ChromaLuminance;      //[0.15 - 0.95]
+
+uniform float LumAverage;           //4.0
+uniform float Despill;              //0.75
+uniform float DespillLuminanceAdd;  //0.3
+
 float rgb2y(vec3 rgb)
 {
     return rgb.r *  0.299 + rgb.g *  0.587 + rgb.b *  0.114;
@@ -45,9 +53,6 @@ float atan2(float y, float x)
     return t3*float(180)/float(3.141592654);
 }
 
-const float GREEN_ANGLE=-135.0;
-const float CLAMP_ANGLE=50.0;
-
 float contrast(float origin,float scale)
 {
     return clamp(0.5+(origin-0.5)*scale,0.0,1.0);
@@ -55,7 +60,7 @@ float contrast(float origin,float scale)
 
 float GetChroma(float angle,float clamp_angle)
 {
-    float gap=abs(angle-GREEN_ANGLE);
+    float gap=abs(angle-ChromaColor);
     float alpha=clamp(gap,0.0,clamp_angle)/clamp_angle;
 
     return contrast(alpha,2.0);
@@ -65,13 +70,13 @@ vec4 clear_override_color(vec3 color,float alpha)
 {
     vec3 result=color*alpha;
 
-    float v = (2.0*result.b+result.r)/3.5;
+    float v = (2.0*result.b+result.r)/LumAverage;
 
-    if(result.g > v) result.g = mix(result.g,v,0.75);
+    if(result.g > v) result.g = mix(result.g,v,Despill);
 
     float dif=rgb2y(color - result);
 
-    result += mix(0.0, dif, 0.3);
+    result += mix(0.0, dif, DespillLuminanceAdd);
 
     return vec4(result,alpha);
 }
@@ -82,11 +87,18 @@ void main()
 
     vec3 yuv=rgb2ycbcr(rgb);
 
-    float angle=atan2(yuv.g,yuv.b);
+    if(yuv.r<ChromaLuminance.x||yuv.r>ChromaLuminance.y)
+    {
+        gl_FragColor=vec4(rgb,1.0);
+    }
+    else
+    {
+        float angle=atan2(yuv.g, yuv.b);
 
-    float alpha=GetChroma(angle,CLAMP_ANGLE);
+        float alpha=GetChroma(angle, ChromaScope);
 
-    vec4 fc=clear_override_color(rgb,alpha);
+        vec4 fc=clear_override_color(rgb, alpha);
 
-    gl_FragColor=fc;
+        gl_FragColor=fc;
+    }
 }
