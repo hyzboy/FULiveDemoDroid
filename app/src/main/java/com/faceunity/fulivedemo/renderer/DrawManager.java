@@ -2,6 +2,7 @@ package com.faceunity.fulivedemo.renderer;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.opengl.GLES20;
 
@@ -16,8 +17,10 @@ import com.faceunity.fulivedemo.drawobject.DrawText;
 import com.faceunity.fulivedemo.drawobject.DrawTextureAlpha;
 import com.faceunity.fulivedemo.gl.GL2FBO;
 import com.faceunity.fulivedemo.gl.ShaderModule;
+import com.faceunity.utils.BitmapUtil;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
@@ -292,19 +295,23 @@ public class DrawManager
             }
 
             {
-                DrawBitmap db=new DrawBitmap();
+                try
+                {
+                    DrawBitmap db=new DrawBitmap();
 
-                Bitmap bmp=Bitmap.createBitmap(screen_width,64,Bitmap.Config.ARGB_8888);
+                    InputStream is=this.activity.getApplicationContext().getAssets().open("Pictures/dragonsplash.png");
 
-                for(int row=0;row<64;row++)
-                    for(int col=0;col<width;col++)
-                        bmp.setPixel(col,row,(col%2==row%2)? Color.WHITE:Color.DKGRAY);
+                    Bitmap bmp = BitmapFactory.decodeStream(is);
 
-                db.setSurfaceSize(screen_width,screen_height);
-                db.setBitmap(bmp,0);
-                db.setLayout(0,0,           //位置
-                             1.0f,1.0f);    //缩放系数
-                draw_object[2]=db;
+                    db.setSurfaceSize(screen_width, screen_height);
+                    db.setBitmap(bmp, 0);
+                    db.setLayout(0, 0,           //位置
+                                 1.0f, 1.0f);    //缩放系数
+                    draw_object[2] = db;
+                }catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
     }
