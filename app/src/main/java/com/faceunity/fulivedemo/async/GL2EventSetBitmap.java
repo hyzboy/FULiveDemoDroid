@@ -20,6 +20,6 @@ public class GL2EventSetBitmap extends GL2Event
 
     @Override
     public void run() {
-        ((DrawBitmap)draw_object).update(bmp,rotate);
+        ((DrawBitmap)draw_object).setBitmap(bmp,rotate);
     }
 }

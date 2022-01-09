@@ -2,6 +2,7 @@ package com.faceunity.fulivedemo.renderer;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.opengl.GLES20;
 
 import com.faceunity.fulivedemo.async.GL2Event;
@@ -289,6 +290,22 @@ public class DrawManager
                 gif.start();
                 draw_object[1] = gif;
             }
+
+            {
+                DrawBitmap db=new DrawBitmap();
+
+                Bitmap bmp=Bitmap.createBitmap(screen_width,64,Bitmap.Config.ARGB_8888);
+
+                for(int row=0;row<64;row++)
+                    for(int col=0;col<width;col++)
+                        bmp.setPixel(col,row,(col%2==row%2)? Color.WHITE:Color.DKGRAY);
+
+                db.setSurfaceSize(screen_width,screen_height);
+                db.setBitmap(bmp,0);
+                db.setLayout(0,0,           //位置
+                             1.0f,1.0f);    //缩放系数
+                draw_object[2]=db;
+            }
         }
     }
 
@@ -317,7 +334,7 @@ public class DrawManager
             obj_bmp.SetLayout(0,0,1,1);       //设定为全屏
 
             draw_object[index]=obj_bmp;
-            obj_bmp.update(bmp,rotate);
+            obj_bmp.setBitmap(bmp,rotate);
         }
         else
         {
@@ -325,7 +342,7 @@ public class DrawManager
                 return(false);
 
             DrawBitmap obj_bmp= (DrawBitmap) obj;
-            obj_bmp.update(bmp,rotate);
+            obj_bmp.setBitmap(bmp,rotate);
         }
 
         return(true);
