@@ -2,9 +2,15 @@ precision highp float;
 varying vec2 vTextureCoord;
 uniform sampler2D sTexture;
 
-uniform float ChromaColor;          //-135.0
-uniform float ChromaScope;          //45
-uniform vec2  ChromaLuminance;      //[0.15 - 0.95]
+uniform float KeyCB;
+uniform float KeyCR;
+uniform float ColorCutoff;          //0.22
+uniform float ColorFeathering;      //0.33
+uniform float MaskFeathering;       //1
+uniform float Sharpening;           //0.5
+
+uniform vec2 pixelWidth;
+uniform vec2 pixelHeight;
 
 uniform float LumAverage;           //4.0
 uniform float Despill;              //0.75
@@ -15,55 +21,27 @@ float rgb2y(vec3 rgb)
     return rgb.r *  0.299 + rgb.g *  0.587 + rgb.b *  0.114;
 }
 
-vec3 rgb2ycbcr(vec3 rgb)
+float rgb2cb(vec3 c)
 {
-    vec3 yuv;
-
-    yuv.x = rgb.r *  0.299 + rgb.g *  0.587 + rgb.b *  0.114;
-    yuv.y = rgb.r * -0.169 + rgb.g * -0.331 + rgb.b *  0.5  ;
-    yuv.z = rgb.r *  0.5   + rgb.g * -0.419 + rgb.b * -0.081;
-
-    return yuv;
+    return (0.5 + -0.168736*c.r - 0.331264*c.g + 0.5*c.b);
 }
 
-float atan2(float y, float x)
+float rgb2cr(vec3 c)
 {
-    float t0, t1, t2, t3, t4;
-
-    t3 = abs(x);
-    t1 = abs(y);
-    t0 = max(t3, t1);
-    t1 = min(t3, t1);
-    t3 = float(1) / t0;
-    t3 = t1 * t3;
-
-    t4 = t3 * t3;
-    t0 =         - float(0.013480470);
-    t0 = t0 * t4 + float(0.057477314);
-    t0 = t0 * t4 - float(0.121239071);
-    t0 = t0 * t4 + float(0.195635925);
-    t0 = t0 * t4 - float(0.332994597);
-    t0 = t0 * t4 + float(0.999995630);
-    t3 = t0 * t3;
-
-    t3 = (abs(y) > abs(x)) ? float(1.570796327) - t3 : t3;
-    t3 = (x < 0.0) ?  float(3.141592654) - t3 : t3;
-    t3 = (y < 0.0) ? -t3 : t3;
-
-    return t3*float(180)/float(3.141592654);
+    return (0.5 + 0.5*c.r - 0.418688*c.g - 0.081312*c.b);
 }
 
-float contrast(float origin,float scale)
+float maskedTex2D(vec2 uv)
 {
-    return clamp(0.5+(origin-0.5)*scale,0.0,1.0);
-}
+    vec3 color = texture2D(sTexture,uv).rgb;
 
-float GetChroma(float angle,float clamp_angle)
-{
-    float gap=abs(angle-ChromaColor);
-    float alpha=clamp(gap,0.0,clamp_angle)/clamp_angle;
+    float cb = rgb2cb(color);
+    float cr = rgb2cr(color);
 
-    return contrast(alpha,2.0);
+    float temp = (KeyCB-cb)*(KeyCB-cb)+(KeyCR-cr)*(KeyCR-cr);
+    if (temp < ColorCutoff) return 0.0;
+    if (temp < ColorFeathering) return (temp-ColorCutoff)/(ColorFeathering-ColorCutoff);
+    return 1.0;
 }
 
 vec4 clear_override_color(vec3 color,float alpha)
@@ -83,22 +61,19 @@ vec4 clear_override_color(vec3 color,float alpha)
 
 void main()
 {
-    vec3 rgb=texture2D(sTexture,vTextureCoord).rgb;
+    vec3 color=texture2D(sTexture,vTextureCoord).rgb;
 
-    vec3 yuv=rgb2ycbcr(rgb);
+    float c = maskedTex2D(vTextureCoord);
+    float r = maskedTex2D(vTextureCoord + pixelWidth);
+    float l = maskedTex2D(vTextureCoord - pixelWidth);
+    float d = maskedTex2D(vTextureCoord + pixelHeight);
+    float u = maskedTex2D(vTextureCoord - pixelHeight);
+    float rd = maskedTex2D(vTextureCoord + pixelWidth + pixelHeight) * .707;
+    float dl = maskedTex2D(vTextureCoord - pixelWidth + pixelHeight) * .707;
+    float lu = maskedTex2D(vTextureCoord - pixelHeight - pixelWidth) * .707;
+    float ur = maskedTex2D(vTextureCoord + pixelWidth - pixelHeight) * .707;
+    float blurContribution = (r + l + d + u + rd + dl + lu + ur + c) * 0.12774655;
+    float smoothedMask = smoothstep(Sharpening, 1.0, mix(c, blurContribution, MaskFeathering));
 
-    if(yuv.r<ChromaLuminance.x||yuv.r>ChromaLuminance.y)
-    {
-        gl_FragColor=vec4(rgb,1.0);
-    }
-    else
-    {
-        float angle=atan2(yuv.g, yuv.b);
-
-        float alpha=GetChroma(angle, ChromaScope);
-
-        vec4 fc=clear_override_color(rgb, alpha);
-
-        gl_FragColor=fc;
-    }
+    gl_FragColor=clear_override_color(color,smoothedMask);
 }
