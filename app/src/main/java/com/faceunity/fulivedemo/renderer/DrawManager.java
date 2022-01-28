@@ -305,7 +305,11 @@ public class DrawManager
 
                     db.setSurfaceSize(screen_width, screen_height);
                     db.setBitmap(bmp, 0);
-                    db.setLayout(0, 0,           //位置
+
+                    float l=(screen_width-bmp.getWidth())/2.0f;
+                    float t=(screen_height-bmp.getHeight())/2.0f;
+
+                    db.setLayout(l, t,           //位置
                                  1.0f, 1.0f);    //缩放系数
                     draw_object[2] = db;
                 }catch (IOException e)

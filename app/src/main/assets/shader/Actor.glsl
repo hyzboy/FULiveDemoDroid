@@ -1,4 +1,5 @@
 precision highp float;
+
 varying vec2 vTextureCoord;
 uniform sampler2D sTexture;
 
@@ -68,10 +69,10 @@ void main()
     float l = maskedTex2D(vTextureCoord - pixelWidth);
     float d = maskedTex2D(vTextureCoord + pixelHeight);
     float u = maskedTex2D(vTextureCoord - pixelHeight);
-    float rd = maskedTex2D(vTextureCoord + pixelWidth + pixelHeight) * .707;
-    float dl = maskedTex2D(vTextureCoord - pixelWidth + pixelHeight) * .707;
-    float lu = maskedTex2D(vTextureCoord - pixelHeight - pixelWidth) * .707;
-    float ur = maskedTex2D(vTextureCoord + pixelWidth - pixelHeight) * .707;
+    float rd = maskedTex2D(vTextureCoord + pixelWidth + pixelHeight) * 0.707;
+    float dl = maskedTex2D(vTextureCoord - pixelWidth + pixelHeight) * 0.707;
+    float lu = maskedTex2D(vTextureCoord - pixelHeight - pixelWidth) * 0.707;
+    float ur = maskedTex2D(vTextureCoord + pixelWidth - pixelHeight) * 0.707;
     float blurContribution = (r + l + d + u + rd + dl + lu + ur + c) * 0.12774655;
     float smoothedMask = smoothstep(Sharpening, 1.0, mix(c, blurContribution, MaskFeathering));
 

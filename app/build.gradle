@@ -6,12 +6,11 @@ def appName = 'FULiveDemo'
 def renameApk = false
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '31.0.0'
+    compileSdkVersion 26
     defaultConfig {
         applicationId "com.faceunity.${appName}".toLowerCase()
         minSdkVersion 26
-        targetSdkVersion 28
+        targetSdkVersion 26
         versionCode rootProject.ext.namaSdkVersionCode
         versionName rootProject.ext.namaSdkVersionName
         manifestPlaceholders = ['appName': appName]
@@ -67,7 +66,7 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
-    ndkVersion '22.1.7171670'
+    ndkVersion '21.1.6352462'
     externalNativeBuild {
         cmake {
             path file('src/main/cpp/CMakeLists.txt')

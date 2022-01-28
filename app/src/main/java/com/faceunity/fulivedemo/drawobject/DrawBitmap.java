@@ -35,8 +35,8 @@ public class DrawBitmap extends DrawObject
 
     private void updateLayout()
     {
-        render_layout.set(  draw_left/surface_width,
-                            draw_top/surface_height,
+        render_layout.set(  draw_left,
+                            draw_top,
                             (bmp_width*scale_width)/surface_width,
                             (bmp_height*scale_height)/surface_height);
     }

@@ -1,3 +1,5 @@
+precision highp float;
+
 attribute vec2 aPosition;
 attribute vec2 aTextureCoord;
 varying vec2 vTextureCoord;
